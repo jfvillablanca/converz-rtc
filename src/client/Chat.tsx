@@ -1,12 +1,36 @@
-import {
-    useState,
-} from "react";
+import { useEffect, useState } from "react";
+
+import { io } from "socket.io-client";
+import { FormattedMessage } from "../server/utils/messages";
 
 function Chat() {
+    const [messageThread, setMessageThread] = useState<string[]>([]);
     const [chatMessage, setChatMessage] = useState<string>("");
+    const socket = io();
+
     const handleChatInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         setChatMessage(event.target.value);
     };
+
+    const handleChatSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        socket.emit("clientEmitChatMessage", chatMessage.trim());
+        setChatMessage("");
+    };
+
+    const handleIncomingMessage = (incomingMessage: FormattedMessage) => {
+        setMessageThread((prevChatMessages) => [
+            ...prevChatMessages,
+            incomingMessage.messageText,
+        ]);
+    };
+
+    useEffect(() => {
+        socket.on("serverEmitChatMessage", handleIncomingMessage);
+        return () => {
+            socket.off("serverEmitChatMessage", handleIncomingMessage);
+        };
+    }, []);
 
     return (
         <>
@@ -28,7 +52,15 @@ function Chat() {
                         </h3>
                         <ul id='users'></ul>
                     </div>
-                    <div className='chat-messages'></div>
+                    <div className='chat-messages'>
+                        {messageThread.map((text, index) => {
+                            return (
+                                <div key={index} className='message'>
+                                    <p className='text'>{text}</p>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </main>
                 <div className='chat-form-container'>
                     <form id='chat-form' onSubmit={handleChatSubmit}>
