@@ -7,9 +7,12 @@ import { Server, Socket } from "socket.io";
 
 const app = express();
 const server = http.createServer(app);
+const io = new Server(server);
 
-app.get("/hello", (_, res) => {
-  res.send("Hello Vite + React + TypeScript!");
+io.on("connection", (socket: Socket) => {
+    socket.on("clientEmitChatMessage", (msg: string) => {
+        io.emit("serverEmitChatMessage", msg);
+    });
 });
 
 if (ENVIRONMENT !== "production") {
