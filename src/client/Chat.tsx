@@ -1,4 +1,13 @@
+import {
+    useState,
+} from "react";
+
 function Chat() {
+    const [chatMessage, setChatMessage] = useState<string>("");
+    const handleChatInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setChatMessage(event.target.value);
+    };
+
     return (
         <>
             <div className='chat-container'>
@@ -22,10 +31,12 @@ function Chat() {
                     <div className='chat-messages'></div>
                 </main>
                 <div className='chat-form-container'>
-                    <form id='chat-form'>
+                    <form id='chat-form' onSubmit={handleChatSubmit}>
                         <input
                             type='text'
                             placeholder='Enter Message'
+                            value={chatMessage}
+                            onChange={handleChatInput}
                             required
                         />
                         <button className='btn'>
