@@ -5,6 +5,7 @@ import ReactDOM from "react-dom/client";
 
 import App from "./App";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import SignIn from "./SignIn";
 import Chat from "./Chat";
 
 const router = createBrowserRouter([
@@ -12,6 +13,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <App />,
         children: [
+            {
+                path: "/",
+                element: <SignIn />,
+            },
             {
                 path: "/chat",
                 element: <Chat />,
