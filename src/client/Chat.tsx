@@ -34,11 +34,14 @@ function Chat() {
 
     return (
         <>
-            <div className='chat-container'>
+            <div className='chat-container rounded-lg'>
                 <header className='chat-header'>
                     <h1>Ass</h1>
-                    <a id='leave-btn' className='btn'>
-                        Leave Room
+                    <a
+                        id='leave-btn'
+                        className='btn rounded-lg py-2 px-4 text-xl'
+                    >
+                        Leave
                     </a>
                 </header>
                 <main className='chat-main'>
@@ -71,7 +74,7 @@ function Chat() {
                             onChange={handleChatInput}
                             required
                         />
-                        <button className='btn'>
+                        <button className='btn rounded-r-lg py-2 px-4 text-xl'>
                             <i className='fas fa-paper-plane'></i> Send
                         </button>
                     </form>

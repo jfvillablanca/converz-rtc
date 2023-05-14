@@ -23,10 +23,10 @@ function SignIn() {
     return (
         <>
             <div className='join-container'>
-                <header className='join-header'>
+                <header className='join-header rounded-t-lg'>
                     <h1>Ass</h1>
                 </header>
-                <main className='join-main'>
+                <main className='join-main rounded-b-lg'>
                     <form onSubmit={handleSubmit}>
                         <div className='form-control'>
                             <label htmlFor='username'>Username</label>
@@ -50,8 +50,11 @@ function SignIn() {
                                 ))}
                             </select>
                         </div>
-                        <button type='submit' className='btn'>
-                            Join Chat
+                        <button
+                            type='submit'
+                            className='btn rounded-lg p-2 text-2xl'
+                        >
+                            Join
                         </button>
                     </form>
                 </main>
