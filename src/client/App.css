@@ -101,7 +101,7 @@ a {
   background-color: var(--dark-color-c);
 }
 
-@media (max-width: 700px) {
+@media (max-width: 640px) {
   .chat-main {
     display: block;
   }
