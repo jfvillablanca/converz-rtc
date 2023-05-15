@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { io } from "socket.io-client";
 import { FormattedMessage } from "../server/utils/messages";
@@ -6,6 +6,7 @@ import { FormattedMessage } from "../server/utils/messages";
 function Chat() {
     const [messageThread, setMessageThread] = useState<string[]>([]);
     const [chatMessage, setChatMessage] = useState<string>("");
+    const chatInputRef = useRef<HTMLInputElement>(null);
     const socket = io();
 
     const handleChatInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -16,6 +17,9 @@ function Chat() {
         event.preventDefault();
         socket.emit("clientEmitChatMessage", chatMessage.trim());
         setChatMessage("");
+        if (chatInputRef.current) {
+            chatInputRef.current.focus();
+        }
     };
 
     const handleIncomingMessage = (incomingMessage: FormattedMessage) => {
@@ -97,6 +101,7 @@ function Chat() {
                             placeholder='Enter Message'
                             value={chatMessage}
                             onChange={handleChatInput}
+                            ref={chatInputRef}
                             required
                         />
                         <button className='btn rounded-r-lg py-2 px-4 text-xl'>
