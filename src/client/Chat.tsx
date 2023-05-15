@@ -34,8 +34,8 @@ function Chat() {
 
     return (
         <>
-            <div className='chat-container rounded-lg'>
-                <header className='chat-header'>
+            <div className='chat-container rounded-lg my-7 mx-auto max-w-6xl overflow-hidden'>
+                <header className='chat-header p-4 flex items-center justify-between'>
                     <h1>Ass</h1>
                     <a
                         id='leave-btn'
@@ -44,31 +44,56 @@ function Chat() {
                         Leave
                     </a>
                 </header>
-                <main className='chat-main'>
-                    <div className='chat-sidebar'>
-                        <h3>
-                            <i className='fas fa-comments'></i> Room Name:
+                <main className='chat-main grid grid-cols-4'>
+                    <div className='chat-sidebar pt-5 px-5 pb-14 col-span-1 overflow-y-scroll'>
+                        <h3 className='mb-4'>
+                            <i className='fas fa-comments mr-2'></i> Room Name
                         </h3>
-                        <h2 id='room-name'></h2>
-                        <h3>
-                            <i className='fas fa-users'></i> Users
+                        <h2 id='room-name' className='p-2 mb-5 text-xl'></h2>
+                        <h3 className='mb-4'>
+                            <i className='fas fa-users mr-2'></i> Users
                         </h3>
-                        <ul id='users'></ul>
+                        <ul id='users'>
+                            {/* These are placeholder values. Use tailwind classes on <li> creation */}
+                            <li className='py-3 px-0'>Bob</li>
+                            <li className='py-3 px-0'>Mary</li>
+                        </ul>
                     </div>
-                    <div className='chat-messages'>
+                    <div className='chat-messages p-7 max-h-96 col-span-3 overflow-y-scroll'>
                         {messageThread.map((text, index) => {
                             return (
-                                <div key={index} className='message'>
-                                    <p className='text'>{text}</p>
+                                <div key={index} className='py-3'>
+                                    {/* user details placeholder */}
+                                    <div className='grid grid-cols-8 mb-3 h-10'>
+                                        <img
+                                            className='col-span-1 rounded-full flex self-center justify-self-center w-8 h-8 object-cover'
+                                            src='https://api.dicebear.com/6.x/identicon/svg'
+                                        />
+                                        <p className='col-span-7 text-xl self-center font-bold'>
+                                            Bob
+                                        </p>
+                                    </div>
+                                    <div className='message rounded-2xl grid grid-cols-8 py-4 mb-2'>
+                                        {/* timestamp placeholder */}
+                                        <p className='timestamp col-span-1 flex self-center justify-self-center opacity-70 text-xs'>
+                                            10:23 PM
+                                        </p>
+                                        <p className='col-span-7'>{text}</p>
+                                    </div>
                                 </div>
                             );
                         })}
                     </div>
                 </main>
-                <div className='chat-form-container'>
-                    <form id='chat-form' onSubmit={handleChatSubmit}>
+                <div className='chat-form-container py-5 px-8'>
+                    <form
+                        id='chat-form'
+                        className='flex'
+                        onSubmit={handleChatSubmit}
+                    >
                         <input
                             type='text'
+                            className='rounded-l-lg py-2 px-4 flex-1'
                             placeholder='Enter Message'
                             value={chatMessage}
                             onChange={handleChatInput}
