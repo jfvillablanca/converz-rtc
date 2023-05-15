@@ -34,7 +34,7 @@ function Chat() {
 
     return (
         <>
-            <div className='chat-container rounded-lg my-7 mx-auto max-w-6xl overflow-hidden'>
+            <div className='chat-container flex flex-col h-screen rounded-lg mx-auto max-w-6xl overflow-hidden'>
                 <header className='chat-header p-4 flex items-center justify-between'>
                     <h1>Ass</h1>
                     <a
@@ -44,8 +44,8 @@ function Chat() {
                         Leave
                     </a>
                 </header>
-                <main className='chat-main grid grid-cols-4'>
-                    <div className='chat-sidebar pt-5 px-5 pb-14 col-span-1 overflow-y-scroll'>
+                <main className='chat-main h-full grid grid-cols-4 overflow-hidden'>
+                    <div className='chat-sidebar pt-5 px-5 col-span-1 overflow-y-scroll'>
                         <h3 className='mb-4'>
                             <i className='fas fa-comments mr-2'></i> Room Name
                         </h3>
@@ -59,7 +59,7 @@ function Chat() {
                             <li className='py-3 px-0'>Mary</li>
                         </ul>
                     </div>
-                    <div className='chat-messages p-7 max-h-96 col-span-3 overflow-y-scroll'>
+                    <div className='chat-messages h-full px-7 col-span-3 overflow-y-scroll'>
                         {messageThread.map((text, index) => {
                             return (
                                 <div key={index} className='py-3'>
