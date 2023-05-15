@@ -22,14 +22,16 @@ function SignIn() {
 
     return (
         <>
-            <div className='join-container'>
-                <header className='join-header'>
+            <div className='join-container my-20 mx-auto max-w-lg'>
+                <header className='join-header rounded-t-lg p-5 text-center'>
                     <h1>Ass</h1>
                 </header>
-                <main className='join-main'>
+                <main className='join-main rounded-b-lg py-7 px-10'>
                     <form onSubmit={handleSubmit}>
-                        <div className='form-control'>
-                            <label htmlFor='username'>Username</label>
+                        <div className='form-control mb-5'>
+                            <label htmlFor='username' className='block mb-1'>
+                                Username
+                            </label>
                             <input
                                 type='text'
                                 name='username'
@@ -37,12 +39,17 @@ function SignIn() {
                                 value={username}
                                 onChange={handleUsernameInput}
                                 placeholder='Enter username...'
+                                className='p-3 w-full'
                                 required
                             />
                         </div>
-                        <div className='form-control'>
+                        <div className='form-control mb-5'>
                             <label htmlFor='room'>Room</label>
-                            <select name='room' id='room'>
+                            <select
+                                name='room'
+                                id='room'
+                                className='p-3 w-full'
+                            >
                                 {roomNames.map((room, index) => (
                                     <option key={index} value={room}>
                                         {room}
@@ -50,8 +57,11 @@ function SignIn() {
                                 ))}
                             </select>
                         </div>
-                        <button type='submit' className='btn'>
-                            Join Chat
+                        <button
+                            type='submit'
+                            className='btn rounded-lg p-2 text-2xl mt-5 w-full'
+                        >
+                            Join
                         </button>
                     </form>
                 </main>
