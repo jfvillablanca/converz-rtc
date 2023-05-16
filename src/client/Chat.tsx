@@ -2,9 +2,11 @@ import { useEffect, useRef, useState } from "react";
 
 import { io } from "socket.io-client";
 import { FormattedMessage } from "../server/utils/messages";
+import { useCurrentUser } from "./App";
 
 function Chat() {
     const [messageThread, setMessageThread] = useState<string[]>([]);
+    const [currentUser, _] = useCurrentUser();
     const [chatMessage, setChatMessage] = useState<string>("");
     const chatInputRef = useRef<HTMLInputElement>(null);
     const socket = io();
@@ -30,6 +32,7 @@ function Chat() {
     };
 
     useEffect(() => {
+        socket.emit("login", currentUser);
         socket.on("serverEmitChatMessage", handleIncomingMessage);
         return () => {
             socket.off("serverEmitChatMessage", handleIncomingMessage);
@@ -74,7 +77,7 @@ function Chat() {
                                             src='https://api.dicebear.com/6.x/identicon/svg'
                                         />
                                         <p className='col-span-7 text-xl self-center font-bold'>
-                                            Bob
+                                            {currentUser}
                                         </p>
                                     </div>
                                     <div className='message rounded-2xl grid grid-cols-8 py-4 mb-2'>
