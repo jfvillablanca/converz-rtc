@@ -1,15 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 
-import { io } from "socket.io-client";
 import { FormattedMessage } from "../server/utils/messages";
 import { useCurrentUser } from "./App";
+import { socket } from "./socket";
 
 function Chat() {
     const [messageThread, setMessageThread] = useState<string[]>([]);
     const [currentUser, _] = useCurrentUser();
     const [chatMessage, setChatMessage] = useState<string>("");
     const chatInputRef = useRef<HTMLInputElement>(null);
-    const socket = io();
 
     const handleChatInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         setChatMessage(event.target.value);
