@@ -1,22 +1,18 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { io } from "socket.io-client";
+import { useCurrentUser } from "./App";
 
 function SignIn() {
     const roomNames = ["JavaScript", "Python", "PHP", "C#", "Ruby", "Java"];
-    const [username, setUsername] = useState<string>("");
+    const [currentUser, setCurrentUser] = useCurrentUser();
     const navigate = useNavigate();
-
-    const socket = io();
 
     const handleUsernameInput = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
-        setUsername(event.target.value);
+        setCurrentUser(event.target.value);
     };
 
     const handleSubmit = () => {
-        socket.emit("login", username);
         navigate("/chat");
     };
 
@@ -36,7 +32,7 @@ function SignIn() {
                                 type='text'
                                 name='username'
                                 id='username'
-                                value={username}
+                                value={currentUser}
                                 onChange={handleUsernameInput}
                                 placeholder='Enter username...'
                                 className='p-3 w-full'
