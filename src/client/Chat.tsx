@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 
-import { ChatMessageType, FormattedMessageType, UserType  } from "../utils/types";
+import {
+    ChatMessageType,
+    FormattedMessageType,
+    UserType,
+} from "../utils/types";
 import { useCurrentUser } from "./App";
 import { socket } from "./socket";
 import {
@@ -11,11 +15,12 @@ import {
 } from "../utils/event-namespace";
 
 function Chat() {
-
     const [userList, setUserList] = useState<UserType[]>([]);
     const [currentUser, _] = useCurrentUser();
 
-    const [messageThread, setMessageThread] = useState<FormattedMessageType[]>([]);
+    const [messageThread, setMessageThread] = useState<FormattedMessageType[]>(
+        []
+    );
     const [chatMessage, setChatMessage] = useState<ChatMessageType>({
         user: currentUser,
         messagebody: "",
