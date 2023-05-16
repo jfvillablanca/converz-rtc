@@ -32,6 +32,7 @@ function Chat() {
             messagebody: "",
         }));
 
+        // HACK: Place this inside a useEffect
         if (chatInputRef.current) {
             chatInputRef.current.focus();
         }
@@ -74,17 +75,14 @@ function Chat() {
                             <i className='fas fa-users mr-2'></i> Users
                         </h3>
                         <ul id='users'>
-                            {/* These are placeholder values. Use tailwind classes on <li> creation */}
-                            <li className='py-3 px-0'>Bob</li>
-                            <li className='py-3 px-0'>Mary</li>
                         </ul>
                     </div>
                     <div className='chat-messages h-full px-7 col-span-3 overflow-y-scroll'>
                         {messageThread.map((text, index) => {
                             return (
                                 <div key={index} className='py-3'>
-                                    {/* user details placeholder */}
                                     <div className='grid grid-cols-8 mb-3 h-10'>
+                                        {/* user avatar placeholder */}
                                         <img
                                             className='col-span-1 rounded-full flex self-center justify-self-center w-8 h-8 object-cover'
                                             src='https://api.dicebear.com/6.x/identicon/svg'
@@ -94,7 +92,6 @@ function Chat() {
                                         </p>
                                     </div>
                                     <div className='message rounded-2xl grid grid-cols-8 py-4 mb-2'>
-                                        {/* timestamp placeholder */}
                                         <p className='timestamp col-span-1 flex self-center justify-self-center opacity-70 text-xs'>
                                             10:23 PM
                                         </p>
