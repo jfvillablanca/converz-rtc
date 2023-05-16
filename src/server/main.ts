@@ -21,7 +21,17 @@ const io = new Server(server, {
     },
 });
 
+let connectedUsers: UserType[] = [];
+const botName = "AssLoBot";
 io.on("connection", (socket: Socket) => {
+    socket.on(EVENT_LOGIN, (newUser: UserType) => {
+        connectedUsers.push(newUser);
+        io.emit(EVENT_LOGIN_FROM_SERVER, connectedUsers);
+        io.emit(
+            EVENT_CHAT_FROM_SERVER,
+            formatMessage(botName, `${newUser} joins the chat`)
+        );
+    });
 
     socket.on(EVENT_CHAT, (msg: ChatMessageType) => {
         io.emit(
