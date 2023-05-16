@@ -54,6 +54,10 @@ function Chat() {
         ]);
     };
 
+    const handleNewUserLogin = (updatedUserList: UserType[]) => {
+        setUserList(updatedUserList);
+    };
+
     useEffect(() => {
         socket.emit(EVENT_LOGIN, currentUser);
     }, []);
