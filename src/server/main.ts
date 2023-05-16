@@ -5,14 +5,16 @@ import ViteExpress from "vite-express";
 import { ENVIRONMENT, PORT } from "./utils/env";
 import { Server, Socket } from "socket.io";
 import { formatMessage } from "./utils/messages";
+import { ChatMessageType, UserType } from "../utils/types";
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
 io.on("connection", (socket: Socket) => {
-    socket.on("clientEmitChatMessage", (msg: string) => {
-        io.emit("serverEmitChatMessage", formatMessage("user", msg));
+
+    socket.on("event-chat", (msg: ChatMessageType) => {
+        socket.broadcast.emit("broadcast-room-on-chat-event", formatMessage(msg.user, msg.messagebody));
     });
 });
 

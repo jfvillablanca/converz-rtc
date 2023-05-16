@@ -1,32 +1,46 @@
 import { useEffect, useRef, useState } from "react";
 
-import { FormattedMessage } from "../server/utils/messages";
+import { ChatMessageType, FormattedMessageType, UserType  } from "../utils/types";
 import { useCurrentUser } from "./App";
 import { socket } from "./socket";
 
 function Chat() {
-    const [messageThread, setMessageThread] = useState<string[]>([]);
+
+    const [userList, setUserList] = useState<UserType[]>([]);
     const [currentUser, _] = useCurrentUser();
-    const [chatMessage, setChatMessage] = useState<string>("");
+
+    const [messageThread, setMessageThread] = useState<FormattedMessageType[]>([]);
+    const [chatMessage, setChatMessage] = useState<ChatMessageType>({
+        user: currentUser,
+        messagebody: "",
+    });
+
     const chatInputRef = useRef<HTMLInputElement>(null);
 
     const handleChatInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setChatMessage(event.target.value);
+        setChatMessage((prevChatMessage) => ({
+            ...prevChatMessage,
+            messagebody: event.target.value,
+        }));
     };
 
     const handleChatSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        socket.emit("clientEmitChatMessage", chatMessage.trim());
-        setChatMessage("");
+        socket.emit("event-chat", {... chatMessage, messagebody: chatMessage.messagebody.trim()});
+        setChatMessage((prevChatMessage) => ({
+            ...prevChatMessage,
+            messagebody: "",
+        }));
+
         if (chatInputRef.current) {
             chatInputRef.current.focus();
         }
     };
 
-    const handleIncomingMessage = (incomingMessage: FormattedMessage) => {
+    const handleIncomingMessage = (incomingMessage: FormattedMessageType) => {
         setMessageThread((prevChatMessages) => [
             ...prevChatMessages,
-            incomingMessage.messageText,
+            incomingMessage,
         ]);
     };
 
@@ -101,7 +115,7 @@ function Chat() {
                             type='text'
                             className='rounded-l-lg py-2 px-4 flex-1'
                             placeholder='Enter Message'
-                            value={chatMessage}
+                            value={chatMessage.messagebody}
                             onChange={handleChatInput}
                             ref={chatInputRef}
                             required

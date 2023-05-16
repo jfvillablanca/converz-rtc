@@ -1,15 +1,10 @@
 import moment from "moment";
-
-export interface FormattedMessage {
-    username: string;
-    messageText: string;
-    time: string;
-}
+import { FormattedMessageType } from "../../utils/types";
 
 export function formatMessage(
     username: string,
     messageText: string
-): FormattedMessage {
+): FormattedMessageType {
     return {
         username,
         messageText,
