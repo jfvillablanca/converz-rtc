@@ -2,7 +2,7 @@ import express from "express";
 import logger from "morgan";
 import http from "http";
 import ViteExpress from "vite-express";
-import { ENVIRONMENT, PORT } from "./utils/env";
+import { ENVIRONMENT, PORT, URL_SERVER } from "./utils/env";
 import { Server, Socket } from "socket.io";
 import { formatMessage } from "./utils/messages";
 import { ChatMessageType, UserType } from "../utils/types";
@@ -17,7 +17,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173",
+        origin: URL_SERVER,
     },
 });
 
