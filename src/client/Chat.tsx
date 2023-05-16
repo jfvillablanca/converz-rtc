@@ -89,10 +89,21 @@ function Chat() {
                             <i className='fas fa-users mr-2'></i> Users
                         </h3>
                         <ul id='users'>
+                            {userList.length === 0 ? (
+                                <li>No one is here</li>
+                            ) : (
+                                userList.map((connectedUser, index) => {
+                                    return (
+                                        <li key={index} className='py-3 px-0'>
+                                            {connectedUser}
+                                        </li>
+                                    );
+                                })
+                            )}
                         </ul>
                     </div>
                     <div className='chat-messages h-full px-7 col-span-3 overflow-y-scroll'>
-                        {messageThread.map((text, index) => {
+                        {messageThread.map((msg, index) => {
                             return (
                                 <div key={index} className='py-3'>
                                     <div className='grid grid-cols-8 mb-3 h-10'>
@@ -102,14 +113,16 @@ function Chat() {
                                             src='https://api.dicebear.com/6.x/identicon/svg'
                                         />
                                         <p className='col-span-7 text-xl self-center font-bold'>
-                                            {currentUser}
+                                            {msg.username}
                                         </p>
                                     </div>
                                     <div className='message rounded-2xl grid grid-cols-8 py-4 mb-2'>
                                         <p className='timestamp col-span-1 flex self-center justify-self-center opacity-70 text-xs'>
-                                            10:23 PM
+                                            {msg.time}
                                         </p>
-                                        <p className='col-span-7'>{text}</p>
+                                        <p className='col-span-7'>
+                                            {msg.messageText}
+                                        </p>
                                     </div>
                                 </div>
                             );
