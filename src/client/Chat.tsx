@@ -3,6 +3,12 @@ import { useEffect, useRef, useState } from "react";
 import { ChatMessageType, FormattedMessageType, UserType  } from "../utils/types";
 import { useCurrentUser } from "./App";
 import { socket } from "./socket";
+import {
+    EVENT_CHAT,
+    EVENT_CHAT_FROM_SERVER,
+    EVENT_LOGIN,
+    EVENT_LOGIN_FROM_SERVER,
+} from "../utils/event-namespace";
 
 function Chat() {
 
@@ -26,7 +32,10 @@ function Chat() {
 
     const handleChatSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        socket.emit("event-chat", {... chatMessage, messagebody: chatMessage.messagebody.trim()});
+        socket.emit(EVENT_CHAT, {
+            ...chatMessage,
+            messagebody: chatMessage.messagebody.trim(),
+        });
         setChatMessage((prevChatMessage) => ({
             ...prevChatMessage,
             messagebody: "",
@@ -46,10 +55,15 @@ function Chat() {
     };
 
     useEffect(() => {
-        socket.emit("login", currentUser);
-        socket.on("serverEmitChatMessage", handleIncomingMessage);
+        socket.emit(EVENT_LOGIN, currentUser);
+    }, []);
+
+    useEffect(() => {
+        socket.on(EVENT_CHAT_FROM_SERVER, handleIncomingMessage);
+        socket.on(EVENT_LOGIN_FROM_SERVER, handleNewUserLogin);
         return () => {
-            socket.off("serverEmitChatMessage", handleIncomingMessage);
+            socket.off(EVENT_CHAT_FROM_SERVER, handleIncomingMessage);
+            socket.off(EVENT_LOGIN_FROM_SERVER, handleNewUserLogin);
         };
     }, []);
 
