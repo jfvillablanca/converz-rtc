@@ -2,12 +2,12 @@ import moment from "moment";
 import { FormattedMessageType } from "../../utils/types";
 
 export function formatMessage(
-    username: string,
-    messageText: string
+    user: string,
+    messageBody: string
 ): FormattedMessageType {
     return {
-        username,
-        messageText,
+        user,
+        messageBody,
         time: moment().format("h:mm a"),
     };
 }
