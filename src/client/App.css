@@ -81,6 +81,11 @@ a {
   background-color: var(--dark-color-c);
 }
 
+.chat-form-container textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--highlight-color) inset;
+}
+
 /* Join Page */
 .join-container {
   color: var(--light-color);
