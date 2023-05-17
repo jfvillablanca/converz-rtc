@@ -1,15 +1,15 @@
 import moment from "moment";
 
+export type UserType = string;
+
 export type FormattedMessageType = {
-    username: string;
-    messageText: string;
+    messageBody: string;
+    user: UserType;
     time: string;
 }
 
-export type UserType = string;
-
 export type ChatMessageType = {
-    messagebody: string;
+    messageBody: string;
     user: UserType;
 };
 

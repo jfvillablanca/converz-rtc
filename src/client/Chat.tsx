@@ -23,7 +23,7 @@ function Chat() {
     );
     const [chatMessage, setChatMessage] = useState<ChatMessageType>({
         user: currentUser,
-        messagebody: "",
+        messageBody: "",
     });
 
     const chatInputRef = useRef<HTMLInputElement>(null);
@@ -31,7 +31,7 @@ function Chat() {
     const handleChatInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         setChatMessage((prevChatMessage) => ({
             ...prevChatMessage,
-            messagebody: event.target.value,
+            messageBody: event.target.value,
         }));
     };
 
@@ -39,11 +39,11 @@ function Chat() {
         event.preventDefault();
         socket.emit(EVENT_CHAT, {
             ...chatMessage,
-            messagebody: chatMessage.messagebody.trim(),
+            messageBody: chatMessage.messageBody.trim(),
         });
         setChatMessage((prevChatMessage) => ({
             ...prevChatMessage,
-            messagebody: "",
+            messageBody: "",
         }));
 
         // HACK: Place this inside a useEffect
@@ -122,15 +122,16 @@ function Chat() {
                                             src='https://api.dicebear.com/6.x/identicon/svg'
                                         />
                                         <p className='col-span-7 text-xl self-center font-bold'>
-                                            {msg.username}
+                                            {msg.user}
                                         </p>
                                     </div>
+                                    }
                                     <div className='message rounded-2xl grid grid-cols-8 py-4 mb-2'>
                                         <p className='timestamp col-span-1 flex self-center justify-self-center opacity-70 text-xs'>
                                             {msg.time}
                                         </p>
                                         <p className='col-span-7'>
-                                            {msg.messageText}
+                                            {msg.messageBody}
                                         </p>
                                     </div>
                                 </div>
@@ -148,7 +149,7 @@ function Chat() {
                             type='text'
                             className='rounded-l-lg py-2 px-4 flex-1'
                             placeholder='Enter Message'
-                            value={chatMessage.messagebody}
+                            value={chatMessage.messageBody}
                             onChange={handleChatInput}
                             ref={chatInputRef}
                             required

@@ -36,7 +36,7 @@ io.on("connection", (socket: Socket) => {
     socket.on(EVENT_CHAT, (msg: ChatMessageType) => {
         io.emit(
             EVENT_CHAT_FROM_SERVER,
-            formatMessage(msg.user, msg.messagebody)
+            formatMessage(msg.user, msg.messageBody)
         );
     });
 });
