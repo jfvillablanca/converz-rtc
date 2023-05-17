@@ -36,8 +36,7 @@ function Chat() {
         }));
     };
 
-    const handleChatSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    const handleChatSubmit = () => {
         socket.emit(EVENT_CHAT, {
             ...chatMessage,
             messageBody: chatMessage.messageBody.trim(),
@@ -164,7 +163,10 @@ function Chat() {
                     <form
                         id='chat-form'
                         className='flex'
-                        onSubmit={handleChatSubmit}
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            handleChatSubmit();
+                        }}
                     >
                         <textarea
                             className='rounded-l-lg py-2 px-4 flex-1'
