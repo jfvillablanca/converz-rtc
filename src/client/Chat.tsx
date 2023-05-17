@@ -53,9 +53,9 @@ function Chat() {
     };
 
     const handleIncomingMessage = (incomingMessage: FormattedMessageType) => {
-        setMessageThread((prevChatMessages) => [
-            ...prevChatMessages,
-            incomingMessage,
+        setMessageThread((prevMessageThread) => [
+            ...prevMessageThread,
+            ...[incomingMessage],
         ]);
     };
 
