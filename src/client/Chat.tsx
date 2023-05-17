@@ -52,6 +52,12 @@ function Chat() {
         }
     };
 
+    const shouldRenderUsername = (index: number) => {
+        const prevUserToChat = messageThread[index - 1]?.user;
+        const nextUserToChat = messageThread[index]?.user;
+        return prevUserToChat !== nextUserToChat;
+    };
+
     const handleIncomingMessage = (incomingMessage: FormattedMessageType) => {
         setMessageThread((prevMessageThread) => [
             ...prevMessageThread,
@@ -115,17 +121,18 @@ function Chat() {
                         {messageThread.map((msg, index) => {
                             return (
                                 <div key={index} className='py-3'>
-                                    <div className='grid grid-cols-8 mb-3 h-10'>
-                                        {/* user avatar placeholder */}
-                                        <img
-                                            className='col-span-1 rounded-full flex self-center justify-self-center w-8 h-8 object-cover'
-                                            src='https://api.dicebear.com/6.x/identicon/svg'
-                                        />
-                                        <p className='col-span-7 text-xl self-center font-bold'>
-                                            {msg.user}
-                                        </p>
-                                    </div>
-                                    }
+                                    {shouldRenderUsername(index) && (
+                                        <div className='grid grid-cols-8 mb-3 h-10'>
+                                            {/* user avatar placeholder */}
+                                            <img
+                                                className='col-span-1 rounded-full flex self-center justify-self-center w-8 h-8 object-cover'
+                                                src='https://api.dicebear.com/6.x/identicon/svg'
+                                            />
+                                            <p className='col-span-7 text-xl self-center font-bold'>
+                                                {msg.user}
+                                            </p>
+                                        </div>
+                                    )}
                                     <div className='message rounded-2xl grid grid-cols-8 py-4 mb-2'>
                                         <p className='timestamp col-span-1 flex self-center justify-self-center opacity-70 text-xs'>
                                             {msg.time}
