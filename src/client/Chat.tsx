@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
 
 import {
     ChatMessageType,
@@ -26,17 +26,10 @@ function Chat() {
         messageBody: "",
     });
 
-    const chatInputRef = useRef<HTMLInputElement>(null);
+    const chatInputRef = useRef<HTMLTextAreaElement>(null);
+    const chatThreadDivRef = useRef<HTMLDivElement>(null);
 
-    const handleChatInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setChatMessage((prevChatMessage) => ({
-            ...prevChatMessage,
-            messageBody: event.target.value,
-        }));
-    };
-
-    const handleChatSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    const handleChatSubmit = () => {
         socket.emit(EVENT_CHAT, {
             ...chatMessage,
             messageBody: chatMessage.messageBody.trim(),
@@ -46,7 +39,6 @@ function Chat() {
             messageBody: "",
         }));
 
-        // HACK: Place this inside a useEffect
         if (chatInputRef.current) {
             chatInputRef.current.focus();
         }
@@ -68,6 +60,69 @@ function Chat() {
     const handleNewUserLogin = (updatedUserList: UserType[]) => {
         setUserList(updatedUserList);
     };
+
+    const handleChatInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setChatMessage((prevChatMessage) => ({
+            ...prevChatMessage,
+            messageBody: event.target.value,
+        }));
+    };
+
+    const onShiftEnterKeydown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+        if (event.key === "Enter" && !event.shiftKey) {
+            event.preventDefault();
+            handleChatSubmit();
+        } else if (event.key === "Enter" && event.shiftKey) {
+            event.preventDefault();
+            setChatMessage((prevChatMessage) => ({
+                ...prevChatMessage,
+                messageBody: `${prevChatMessage.messageBody}\n`,
+            }));
+        }
+    };
+
+    useEffect(() => {
+        if (chatInputRef.current) {
+            // HACK:
+            // Currently hardcoded min and max height values.
+            // Min height could be inferred based on target style from first render
+            const minChatInputHeight = 45;
+            const maxChatInputHeight = minChatInputHeight * 2;
+
+            const target = chatInputRef.current;
+
+            if (target.style.height !== minChatInputHeight + "px") {
+                target.style.height = minChatInputHeight + "px";
+            }
+
+            const height =
+                target.scrollHeight <= maxChatInputHeight
+                    ? target.scrollHeight + "px"
+                    : maxChatInputHeight + "px";
+
+            if (target.style.height !== height) {
+                target.style.height = height;
+            }
+
+            setTimeout(() => {
+                if (chatInputRef.current) {
+                    chatInputRef.current.scrollTop =
+                        chatInputRef.current.scrollHeight;
+                }
+            }, 0);
+        }
+    }, [chatMessage]);
+
+    useEffect(() => {
+        if (chatThreadDivRef.current) {
+            setTimeout(() => {
+                if (chatThreadDivRef.current) {
+                    chatThreadDivRef.current.scrollTop =
+                        chatThreadDivRef.current.scrollHeight;
+                }
+            }, 0);
+        }
+    }, [messageThread]);
 
     useEffect(() => {
         socket.emit(EVENT_LOGIN, currentUser);
@@ -117,7 +172,10 @@ function Chat() {
                             )}
                         </ul>
                     </div>
-                    <div className='chat-messages h-full p-7 pb-0 col-span-3 overflow-y-scroll'>
+                    <div
+                        className='chat-messages h-full p-7 pb-0 col-span-3 overflow-y-scroll'
+                        ref={chatThreadDivRef}
+                    >
                         {messageThread.map((msg, index) => {
                             return (
                                 <div key={index} className='mt-2'>
@@ -137,7 +195,7 @@ function Chat() {
                                         <p className='timestamp col-span-1 flex self-center justify-self-center opacity-70 text-xs'>
                                             {msg.time}
                                         </p>
-                                        <p className='col-span-7'>
+                                        <p className='col-span-7 whitespace-pre-wrap'>
                                             {msg.messageBody}
                                         </p>
                                     </div>
@@ -150,17 +208,21 @@ function Chat() {
                     <form
                         id='chat-form'
                         className='flex'
-                        onSubmit={handleChatSubmit}
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            handleChatSubmit();
+                        }}
                     >
-                        <input
-                            type='text'
+                        <textarea
                             className='rounded-l-lg py-2 px-4 flex-1'
                             placeholder='Enter Message'
                             value={chatMessage.messageBody}
                             onChange={handleChatInput}
+                            onKeyDown={onShiftEnterKeydown}
                             ref={chatInputRef}
+                            rows={1}
                             required
-                        />
+                        ></textarea>
                         <button className='btn rounded-r-lg py-2 px-4 text-xl'>
                             <i className='fas fa-paper-plane'></i> Send
                         </button>
