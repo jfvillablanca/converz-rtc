@@ -117,12 +117,12 @@ function Chat() {
                             )}
                         </ul>
                     </div>
-                    <div className='chat-messages h-full px-7 col-span-3 overflow-y-scroll'>
+                    <div className='chat-messages h-full p-7 pb-0 col-span-3 overflow-y-scroll'>
                         {messageThread.map((msg, index) => {
                             return (
-                                <div key={index} className='py-3'>
+                                <div key={index} className='mt-2'>
                                     {shouldRenderUsername(index) && (
-                                        <div className='grid grid-cols-8 mb-3 h-10'>
+                                        <div className='grid grid-cols-8 mb-2 h-10'>
                                             {/* user avatar placeholder */}
                                             <img
                                                 className='col-span-1 rounded-full flex self-center justify-self-center w-8 h-8 object-cover'
@@ -133,7 +133,7 @@ function Chat() {
                                             </p>
                                         </div>
                                     )}
-                                    <div className='message rounded-2xl grid grid-cols-8 py-4 mb-2'>
+                                    <div className='message rounded-2xl grid grid-cols-8 py-3 pr-3'>
                                         <p className='timestamp col-span-1 flex self-center justify-self-center opacity-70 text-xs'>
                                             {msg.time}
                                         </p>
