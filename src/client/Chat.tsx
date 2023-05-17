@@ -26,9 +26,9 @@ function Chat() {
         messageBody: "",
     });
 
-    const chatInputRef = useRef<HTMLInputElement>(null);
+    const chatInputRef = useRef<HTMLTextAreaElement>(null);
 
-    const handleChatInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChatInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setChatMessage((prevChatMessage) => ({
             ...prevChatMessage,
             messageBody: event.target.value,
@@ -152,15 +152,15 @@ function Chat() {
                         className='flex'
                         onSubmit={handleChatSubmit}
                     >
-                        <input
-                            type='text'
+                        <textarea
                             className='rounded-l-lg py-2 px-4 flex-1'
                             placeholder='Enter Message'
                             value={chatMessage.messageBody}
                             onChange={handleChatInput}
                             ref={chatInputRef}
+                            rows={1}
                             required
-                        />
+                        ></textarea>
                         <button className='btn rounded-r-lg py-2 px-4 text-xl'>
                             <i className='fas fa-paper-plane'></i> Send
                         </button>
