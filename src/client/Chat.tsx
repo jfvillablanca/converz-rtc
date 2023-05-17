@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
 
 import {
     ChatMessageType,
@@ -28,13 +28,6 @@ function Chat() {
 
     const chatInputRef = useRef<HTMLTextAreaElement>(null);
     const chatThreadDivRef = useRef<HTMLDivElement>(null);
-
-    const handleChatInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setChatMessage((prevChatMessage) => ({
-            ...prevChatMessage,
-            messageBody: event.target.value,
-        }));
-    };
 
     const handleChatSubmit = () => {
         socket.emit(EVENT_CHAT, {
@@ -66,6 +59,26 @@ function Chat() {
 
     const handleNewUserLogin = (updatedUserList: UserType[]) => {
         setUserList(updatedUserList);
+    };
+
+    const handleChatInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setChatMessage((prevChatMessage) => ({
+            ...prevChatMessage,
+            messageBody: event.target.value,
+        }));
+    };
+
+    const onShiftEnterKeydown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+        if (event.key === "Enter" && !event.shiftKey) {
+            event.preventDefault();
+            handleChatSubmit();
+        } else if (event.key === "Enter" && event.shiftKey) {
+            event.preventDefault();
+            setChatMessage((prevChatMessage) => ({
+                ...prevChatMessage,
+                messageBody: `${prevChatMessage.messageBody}\n`,
+            }));
+        }
     };
 
     useEffect(() => {
@@ -173,6 +186,7 @@ function Chat() {
                             placeholder='Enter Message'
                             value={chatMessage.messageBody}
                             onChange={handleChatInput}
+                            onKeyDown={onShiftEnterKeydown}
                             ref={chatInputRef}
                             rows={1}
                             required
