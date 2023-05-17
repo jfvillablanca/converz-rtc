@@ -2,17 +2,42 @@ import express from "express";
 import logger from "morgan";
 import http from "http";
 import ViteExpress from "vite-express";
-import { ENVIRONMENT, PORT } from "./utils/env";
+import { ENVIRONMENT, PORT, URL_SERVER } from "./utils/env";
 import { Server, Socket } from "socket.io";
 import { formatMessage } from "./utils/messages";
+import { ChatMessageType, UserType } from "../utils/types";
+import {
+    EVENT_CHAT,
+    EVENT_CHAT_FROM_SERVER,
+    EVENT_LOGIN,
+    EVENT_LOGIN_FROM_SERVER,
+} from "../utils/event-namespace";
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+    cors: {
+        origin: URL_SERVER,
+    },
+});
 
+let connectedUsers: UserType[] = [];
+const botName = "AssLoBot";
 io.on("connection", (socket: Socket) => {
-    socket.on("clientEmitChatMessage", (msg: string) => {
-        io.emit("serverEmitChatMessage", formatMessage("user", msg));
+    socket.on(EVENT_LOGIN, (newUser: UserType) => {
+        connectedUsers.push(newUser);
+        io.emit(EVENT_LOGIN_FROM_SERVER, connectedUsers);
+        io.emit(
+            EVENT_CHAT_FROM_SERVER,
+            formatMessage(botName, `${newUser} joins the chat`)
+        );
+    });
+
+    socket.on(EVENT_CHAT, (msg: ChatMessageType) => {
+        io.emit(
+            EVENT_CHAT_FROM_SERVER,
+            formatMessage(msg.user, msg.messageBody)
+        );
     });
 });
 

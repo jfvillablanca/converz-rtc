@@ -1,34 +1,84 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import { io } from "socket.io-client";
-import { FormattedMessage } from "../server/utils/messages";
+import {
+    ChatMessageType,
+    FormattedMessageType,
+    UserType,
+} from "../utils/types";
+import { useCurrentUser } from "./App";
+import { socket } from "./socket";
+import {
+    EVENT_CHAT,
+    EVENT_CHAT_FROM_SERVER,
+    EVENT_LOGIN,
+    EVENT_LOGIN_FROM_SERVER,
+} from "../utils/event-namespace";
 
 function Chat() {
-    const [messageThread, setMessageThread] = useState<string[]>([]);
-    const [chatMessage, setChatMessage] = useState<string>("");
-    const socket = io();
+    const [userList, setUserList] = useState<UserType[]>([]);
+    const [currentUser, _] = useCurrentUser();
+
+    const [messageThread, setMessageThread] = useState<FormattedMessageType[]>(
+        []
+    );
+    const [chatMessage, setChatMessage] = useState<ChatMessageType>({
+        user: currentUser,
+        messageBody: "",
+    });
+
+    const chatInputRef = useRef<HTMLInputElement>(null);
 
     const handleChatInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setChatMessage(event.target.value);
+        setChatMessage((prevChatMessage) => ({
+            ...prevChatMessage,
+            messageBody: event.target.value,
+        }));
     };
 
     const handleChatSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        socket.emit("clientEmitChatMessage", chatMessage.trim());
-        setChatMessage("");
+        socket.emit(EVENT_CHAT, {
+            ...chatMessage,
+            messageBody: chatMessage.messageBody.trim(),
+        });
+        setChatMessage((prevChatMessage) => ({
+            ...prevChatMessage,
+            messageBody: "",
+        }));
+
+        // HACK: Place this inside a useEffect
+        if (chatInputRef.current) {
+            chatInputRef.current.focus();
+        }
     };
 
-    const handleIncomingMessage = (incomingMessage: FormattedMessage) => {
-        setMessageThread((prevChatMessages) => [
-            ...prevChatMessages,
-            incomingMessage.messageText,
+    const shouldRenderUsername = (index: number) => {
+        const prevUserToChat = messageThread[index - 1]?.user;
+        const nextUserToChat = messageThread[index]?.user;
+        return prevUserToChat !== nextUserToChat;
+    };
+
+    const handleIncomingMessage = (incomingMessage: FormattedMessageType) => {
+        setMessageThread((prevMessageThread) => [
+            ...prevMessageThread,
+            ...[incomingMessage],
         ]);
     };
 
+    const handleNewUserLogin = (updatedUserList: UserType[]) => {
+        setUserList(updatedUserList);
+    };
+
     useEffect(() => {
-        socket.on("serverEmitChatMessage", handleIncomingMessage);
+        socket.emit(EVENT_LOGIN, currentUser);
+    }, []);
+
+    useEffect(() => {
+        socket.on(EVENT_CHAT_FROM_SERVER, handleIncomingMessage);
+        socket.on(EVENT_LOGIN_FROM_SERVER, handleNewUserLogin);
         return () => {
-            socket.off("serverEmitChatMessage", handleIncomingMessage);
+            socket.off(EVENT_CHAT_FROM_SERVER, handleIncomingMessage);
+            socket.off(EVENT_LOGIN_FROM_SERVER, handleNewUserLogin);
         };
     }, []);
 
@@ -54,31 +104,42 @@ function Chat() {
                             <i className='fas fa-users mr-2'></i> Users
                         </h3>
                         <ul id='users'>
-                            {/* These are placeholder values. Use tailwind classes on <li> creation */}
-                            <li className='py-3 px-0'>Bob</li>
-                            <li className='py-3 px-0'>Mary</li>
+                            {userList.length === 0 ? (
+                                <li>No one is here</li>
+                            ) : (
+                                userList.map((connectedUser, index) => {
+                                    return (
+                                        <li key={index} className='py-3 px-0'>
+                                            {connectedUser}
+                                        </li>
+                                    );
+                                })
+                            )}
                         </ul>
                     </div>
                     <div className='chat-messages h-full px-7 col-span-3 overflow-y-scroll'>
-                        {messageThread.map((text, index) => {
+                        {messageThread.map((msg, index) => {
                             return (
                                 <div key={index} className='py-3'>
-                                    {/* user details placeholder */}
-                                    <div className='grid grid-cols-8 mb-3 h-10'>
-                                        <img
-                                            className='col-span-1 rounded-full flex self-center justify-self-center w-8 h-8 object-cover'
-                                            src='https://api.dicebear.com/6.x/identicon/svg'
-                                        />
-                                        <p className='col-span-7 text-xl self-center font-bold'>
-                                            Bob
-                                        </p>
-                                    </div>
+                                    {shouldRenderUsername(index) && (
+                                        <div className='grid grid-cols-8 mb-3 h-10'>
+                                            {/* user avatar placeholder */}
+                                            <img
+                                                className='col-span-1 rounded-full flex self-center justify-self-center w-8 h-8 object-cover'
+                                                src='https://api.dicebear.com/6.x/identicon/svg'
+                                            />
+                                            <p className='col-span-7 text-xl self-center font-bold'>
+                                                {msg.user}
+                                            </p>
+                                        </div>
+                                    )}
                                     <div className='message rounded-2xl grid grid-cols-8 py-4 mb-2'>
-                                        {/* timestamp placeholder */}
                                         <p className='timestamp col-span-1 flex self-center justify-self-center opacity-70 text-xs'>
-                                            10:23 PM
+                                            {msg.time}
                                         </p>
-                                        <p className='col-span-7'>{text}</p>
+                                        <p className='col-span-7'>
+                                            {msg.messageBody}
+                                        </p>
                                     </div>
                                 </div>
                             );
@@ -95,8 +156,9 @@ function Chat() {
                             type='text'
                             className='rounded-l-lg py-2 px-4 flex-1'
                             placeholder='Enter Message'
-                            value={chatMessage}
+                            value={chatMessage.messageBody}
                             onChange={handleChatInput}
+                            ref={chatInputRef}
                             required
                         />
                         <button className='btn rounded-r-lg py-2 px-4 text-xl'>
