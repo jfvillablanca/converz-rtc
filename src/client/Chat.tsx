@@ -137,7 +137,7 @@ function Chat() {
                                         <p className='timestamp col-span-1 flex self-center justify-self-center opacity-70 text-xs'>
                                             {msg.time}
                                         </p>
-                                        <p className='col-span-7'>
+                                        <p className='col-span-7 whitespace-pre-wrap'>
                                             {msg.messageBody}
                                         </p>
                                     </div>
