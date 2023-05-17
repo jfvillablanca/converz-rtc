@@ -82,6 +82,38 @@ function Chat() {
     };
 
     useEffect(() => {
+        if (chatInputRef.current) {
+            // HACK:
+            // Currently hardcoded min and max height values.
+            // Min height could be inferred based on target style from first render
+            const minChatInputHeight = 45;
+            const maxChatInputHeight = minChatInputHeight * 2;
+
+            const target = chatInputRef.current;
+
+            if (target.style.height !== minChatInputHeight + "px") {
+                target.style.height = minChatInputHeight + "px";
+            }
+
+            const height =
+                target.scrollHeight <= maxChatInputHeight
+                    ? target.scrollHeight + "px"
+                    : maxChatInputHeight + "px";
+
+            if (target.style.height !== height) {
+                target.style.height = height;
+            }
+
+            setTimeout(() => {
+                if (chatInputRef.current) {
+                    chatInputRef.current.scrollTop =
+                        chatInputRef.current.scrollHeight;
+                }
+            }, 0);
+        }
+    }, [chatMessage]);
+
+    useEffect(() => {
         if (chatThreadDivRef.current) {
             setTimeout(() => {
                 if (chatThreadDivRef.current) {
