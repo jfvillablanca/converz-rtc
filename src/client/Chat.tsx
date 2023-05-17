@@ -27,6 +27,7 @@ function Chat() {
     });
 
     const chatInputRef = useRef<HTMLTextAreaElement>(null);
+    const chatThreadDivRef = useRef<HTMLDivElement>(null);
 
     const handleChatInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setChatMessage((prevChatMessage) => ({
@@ -46,7 +47,6 @@ function Chat() {
             messageBody: "",
         }));
 
-        // HACK: Place this inside a useEffect
         if (chatInputRef.current) {
             chatInputRef.current.focus();
         }
@@ -68,6 +68,17 @@ function Chat() {
     const handleNewUserLogin = (updatedUserList: UserType[]) => {
         setUserList(updatedUserList);
     };
+
+    useEffect(() => {
+        if (chatThreadDivRef.current) {
+            setTimeout(() => {
+                if (chatThreadDivRef.current) {
+                    chatThreadDivRef.current.scrollTop =
+                        chatThreadDivRef.current.scrollHeight;
+                }
+            }, 0);
+        }
+    }, [messageThread]);
 
     useEffect(() => {
         socket.emit(EVENT_LOGIN, currentUser);
@@ -117,7 +128,10 @@ function Chat() {
                             )}
                         </ul>
                     </div>
-                    <div className='chat-messages h-full p-7 pb-0 col-span-3 overflow-y-scroll'>
+                    <div
+                        className='chat-messages h-full p-7 pb-0 col-span-3 overflow-y-scroll'
+                        ref={chatThreadDivRef}
+                    >
                         {messageThread.map((msg, index) => {
                             return (
                                 <div key={index} className='mt-2'>
