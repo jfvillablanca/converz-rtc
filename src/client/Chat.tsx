@@ -50,17 +50,6 @@ function Chat() {
         return prevUserToChat !== nextUserToChat;
     };
 
-    const handleIncomingMessage = (incomingMessage: FormattedMessageType) => {
-        setMessageThread((prevMessageThread) => [
-            ...prevMessageThread,
-            incomingMessage,
-        ]);
-    };
-
-    const handleNewUserLogin = (updatedUserList: UserType[]) => {
-        setUserList(updatedUserList);
-    };
-
     const handleChatInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setChatMessage((prevChatMessage) => ({
             ...prevChatMessage,
@@ -125,10 +114,20 @@ function Chat() {
     }, [messageThread]);
 
     useEffect(() => {
-        socket.emit(EVENT_LOGIN, currentUser);
-    }, []);
+        const handleIncomingMessage = (
+            incomingMessage: FormattedMessageType
+        ) => {
+            setMessageThread((prevMessageThread) => [
+                ...prevMessageThread,
+                incomingMessage,
+            ]);
+        };
 
-    useEffect(() => {
+        const handleNewUserLogin = (updatedUserList: UserType[]) => {
+            setUserList(updatedUserList);
+        };
+
+        socket.emit(EVENT_LOGIN, currentUser);
         socket.on(EVENT_CHAT_FROM_SERVER, handleIncomingMessage);
         socket.on(EVENT_LOGIN_FROM_SERVER, handleNewUserLogin);
         return () => {
