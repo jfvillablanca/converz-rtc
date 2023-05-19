@@ -111,8 +111,18 @@ a {
   background-color: var(--dark-color-c);
 }
 
+.join-main input[type="text"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--highlight-color) inset;
+}
+
 .join-main select {
   background-color: var(--dark-color-c);
+}
+
+.join-main select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--highlight-color) inset;
 }
 
 @media (max-width: 640px) {

@@ -22,12 +22,12 @@ function SignIn() {
     return (
         <>
             <div className='join-container my-20 mx-auto max-w-lg'>
-                <header className='join-header rounded-t-lg p-5 text-center'>
+                <header className='join-header rounded-t-lg p-2 text-center'>
                     <h1>Converz</h1>
                 </header>
                 <main className='join-main rounded-b-lg py-7 px-10'>
                     <form onSubmit={handleSubmit}>
-                        <div className='form-control mb-5'>
+                        <div className='mb-5'>
                             <label htmlFor='username' className='block mb-1'>
                                 Username
                             </label>
@@ -38,16 +38,16 @@ function SignIn() {
                                 value={userAndRoom.username}
                                 onChange={handleInput}
                                 placeholder='Enter username...'
-                                className='p-3 w-full'
+                                className='p-3 rounded-lg w-full'
                                 required
                             />
                         </div>
                         <div className='form-control mb-5'>
-                            <label htmlFor='room'>Room</label>
+                            <label htmlFor='room' className='block mb-1'>Room</label>
                             <select
                                 name='room'
                                 id='room'
-                                className='p-3 w-full'
+                                className='p-3 rounded-lg w-full'
                                 value={userAndRoom.room}
                                 onChange={handleInput}
                             >

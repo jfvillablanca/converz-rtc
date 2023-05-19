@@ -141,8 +141,8 @@ function Chat() {
 
     return (
         <>
-            <div className='chat-container flex flex-col h-screen rounded-lg mx-auto max-w-6xl overflow-hidden'>
-                <header className='chat-header p-4 flex items-center justify-between'>
+            <div className='chat-container flex flex-col h-screen mx-auto max-w-6xl overflow-hidden'>
+                <header className='chat-header px-4 py-2 flex items-center justify-between'>
                     <h1>Converz</h1>
                     <a
                         id='leave-btn'
