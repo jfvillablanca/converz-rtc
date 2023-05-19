@@ -143,7 +143,7 @@ function Chat() {
         <>
             <div className='chat-container flex flex-col h-screen rounded-lg mx-auto max-w-6xl overflow-hidden'>
                 <header className='chat-header p-4 flex items-center justify-between'>
-                    <h1>Ass</h1>
+                    <h1>Converz</h1>
                     <a
                         id='leave-btn'
                         className='btn rounded-lg py-2 px-4 text-xl'

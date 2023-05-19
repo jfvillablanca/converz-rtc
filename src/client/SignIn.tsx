@@ -23,7 +23,7 @@ function SignIn() {
         <>
             <div className='join-container my-20 mx-auto max-w-lg'>
                 <header className='join-header rounded-t-lg p-5 text-center'>
-                    <h1>Ass</h1>
+                    <h1>Converz</h1>
                 </header>
                 <main className='join-main rounded-b-lg py-7 px-10'>
                     <form onSubmit={handleSubmit}>

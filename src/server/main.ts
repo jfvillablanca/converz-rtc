@@ -27,7 +27,7 @@ const io = new Server(server, {
     },
 });
 
-const botName = "AssLoBot";
+const botName = "ConverzBot";
 io.on("connection", (socket: Socket) => {
     // HACK: Must use actual session IDs from a db.
     const { id } = socket;
