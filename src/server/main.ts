@@ -12,6 +12,11 @@ import {
     EVENT_LOGIN,
     EVENT_LOGIN_FROM_SERVER,
 } from "../utils/event-namespace";
+import {
+    getAllConnectedUsers,
+    isIdAUniqueConnection,
+    logTheUserIn,
+} from "./utils/users";
 
 const app = express();
 const server = http.createServer(app);
@@ -21,21 +26,18 @@ const io = new Server(server, {
     },
 });
 
-let connectedUsers: UserType[] = [];
-// HACK: Must use actual session IDs from a db.
-let connectedSocketIds: string[] = [];
 const botName = "AssLoBot";
 io.on("connection", (socket: Socket) => {
     // HACK: Must use actual session IDs from a db.
     const { id } = socket;
+
     socket.on(EVENT_LOGIN, (newUser: UserType) => {
         // NOTE: NOT SURE IF THIS `IF` WILL STILL BE NECESSARY WITH SESSION IDs
         // React re-renders the DOM twice during development mode
         // causing two emits (from the same socket.id)
-        if (!connectedSocketIds.includes(id)) {
-            connectedUsers.push(newUser);
-            connectedSocketIds.push(id);
-            io.emit(EVENT_LOGIN_FROM_SERVER, connectedUsers);
+        if (isIdAUniqueConnection(id)) {
+            logTheUserIn(id, newUser, "default-room");
+            io.emit(EVENT_LOGIN_FROM_SERVER, getAllConnectedUsers());
             io.emit(
                 EVENT_CHAT_FROM_SERVER,
                 formatMessage(botName, `${newUser} joins the chat`)

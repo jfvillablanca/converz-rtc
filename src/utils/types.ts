@@ -13,4 +13,11 @@ export type ChatMessageType = {
     user: UserType;
 };
 
+export type ConnectedUser = {
+    user: UserType;
+    sessionid: string;
+    room: string;
+};
+
+
 
