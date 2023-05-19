@@ -9,8 +9,8 @@ import { ChatMessageType, UserType } from "../utils/types";
 import {
     EVENT_CHAT,
     EVENT_CHAT_FROM_SERVER,
-    EVENT_LOGIN,
-    EVENT_LOGIN_FROM_SERVER,
+    EVENT_UPDATE_USER_LIST,
+    EVENT_UPDATE_USER_LIST_FROM_SERVER,
 } from "../utils/event-namespace";
 import {
     getAllConnectedUsers,
@@ -31,13 +31,13 @@ io.on("connection", (socket: Socket) => {
     // HACK: Must use actual session IDs from a db.
     const { id } = socket;
 
-    socket.on(EVENT_LOGIN, (newUser: UserType) => {
+    socket.on(EVENT_UPDATE_USER_LIST, (newUser: UserType) => {
         // NOTE: NOT SURE IF THIS `IF` WILL STILL BE NECESSARY WITH SESSION IDs
         // React re-renders the DOM twice during development mode
         // causing two emits (from the same socket.id)
         if (isIdAUniqueConnection(id)) {
             logTheUserIn(id, newUser, "default-room");
-            io.emit(EVENT_LOGIN_FROM_SERVER, getAllConnectedUsers());
+            io.emit(EVENT_UPDATE_USER_LIST_FROM_SERVER, getAllConnectedUsers());
             io.emit(
                 EVENT_CHAT_FROM_SERVER,
                 formatMessage(botName, `${newUser} joins the chat`)

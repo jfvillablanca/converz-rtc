@@ -10,8 +10,8 @@ import { socket } from "./socket";
 import {
     EVENT_CHAT,
     EVENT_CHAT_FROM_SERVER,
-    EVENT_LOGIN,
-    EVENT_LOGIN_FROM_SERVER,
+    EVENT_UPDATE_USER_LIST,
+    EVENT_UPDATE_USER_LIST_FROM_SERVER,
 } from "../utils/event-namespace";
 
 function Chat() {
@@ -123,16 +123,19 @@ function Chat() {
             ]);
         };
 
-        const handleNewUserLogin = (updatedUserList: UserType[]) => {
+        const handleUserListUpdate = (updatedUserList: UserType[]) => {
             setUserList(updatedUserList);
         };
 
-        socket.emit(EVENT_LOGIN, currentUser);
+        socket.emit(EVENT_UPDATE_USER_LIST, currentUser);
         socket.on(EVENT_CHAT_FROM_SERVER, handleIncomingMessage);
-        socket.on(EVENT_LOGIN_FROM_SERVER, handleNewUserLogin);
+        socket.on(EVENT_UPDATE_USER_LIST_FROM_SERVER, handleUserListUpdate);
         return () => {
             socket.off(EVENT_CHAT_FROM_SERVER, handleIncomingMessage);
-            socket.off(EVENT_LOGIN_FROM_SERVER, handleNewUserLogin);
+            socket.off(
+                EVENT_UPDATE_USER_LIST_FROM_SERVER,
+                handleUserListUpdate
+            );
         };
     }, []);
 
