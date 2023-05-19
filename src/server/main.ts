@@ -16,6 +16,7 @@ import {
     getAllConnectedUsers,
     isIdAUniqueConnection,
     logTheUserIn,
+    logTheUserOut,
 } from "./utils/users";
 
 const app = express();
@@ -50,6 +51,17 @@ io.on("connection", (socket: Socket) => {
             EVENT_CHAT_FROM_SERVER,
             formatMessage(msg.user, msg.messageBody)
         );
+    });
+
+    socket.on("disconnect", () => {
+        const exitingUser = logTheUserOut(id);
+        if (exitingUser) {
+            io.emit(EVENT_UPDATE_USER_LIST_FROM_SERVER, getAllConnectedUsers());
+            io.emit(
+                EVENT_CHAT_FROM_SERVER,
+                formatMessage(botName, `${exitingUser.user} left the chat`)
+            );
+        }
     });
 });
 
