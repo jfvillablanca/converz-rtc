@@ -1,15 +1,18 @@
 import { useNavigate } from "react-router-dom";
-import { useCurrentUser } from "./App";
+import { useUserAndRoom } from "./App";
 
 function SignIn() {
     const roomNames = ["JavaScript", "Python", "PHP", "C#", "Ruby", "Java"];
-    const [currentUser, setCurrentUser] = useCurrentUser();
+    const [userAndRoom, setUserAndRoom] = useUserAndRoom();
     const navigate = useNavigate();
 
-    const handleUsernameInput = (
-        event: React.ChangeEvent<HTMLInputElement>
+    const handleInput = (
+        event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
     ) => {
-        setCurrentUser(event.target.value);
+        setUserAndRoom((prevState) => ({
+            ...prevState,
+            [event.target.name]: event.target.value,
+        }));
     };
 
     const handleSubmit = () => {
@@ -32,8 +35,8 @@ function SignIn() {
                                 type='text'
                                 name='username'
                                 id='username'
-                                value={currentUser}
-                                onChange={handleUsernameInput}
+                                value={userAndRoom.username}
+                                onChange={handleInput}
                                 placeholder='Enter username...'
                                 className='p-3 w-full'
                                 required
@@ -45,6 +48,8 @@ function SignIn() {
                                 name='room'
                                 id='room'
                                 className='p-3 w-full'
+                                value={userAndRoom.room}
+                                onChange={handleInput}
                             >
                                 {roomNames.map((room, index) => (
                                     <option key={index} value={room}>

@@ -5,7 +5,7 @@ import {
     FormattedMessageType,
     UserType,
 } from "../utils/types";
-import { useCurrentUser } from "./App";
+import { useUserAndRoom } from "./App";
 import { socket } from "./socket";
 import {
     EVENT_CHAT,
@@ -16,13 +16,13 @@ import {
 
 function Chat() {
     const [userList, setUserList] = useState<UserType[]>([]);
-    const [currentUser, _] = useCurrentUser();
+    const [userAndRoom, _] = useUserAndRoom();
 
     const [messageThread, setMessageThread] = useState<FormattedMessageType[]>(
         []
     );
     const [chatMessage, setChatMessage] = useState<ChatMessageType>({
-        user: currentUser,
+        user: userAndRoom.username,
         messageBody: "",
     });
 
@@ -127,7 +127,7 @@ function Chat() {
             setUserList(updatedUserList);
         };
 
-        socket.emit(EVENT_UPDATE_USER_LIST, currentUser);
+        socket.emit(EVENT_UPDATE_USER_LIST, userAndRoom);
         socket.on(EVENT_CHAT_FROM_SERVER, handleIncomingMessage);
         socket.on(EVENT_UPDATE_USER_LIST_FROM_SERVER, handleUserListUpdate);
         return () => {

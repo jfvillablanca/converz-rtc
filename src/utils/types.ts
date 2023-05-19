@@ -1,6 +1,11 @@
-import moment from "moment";
+// FIXME: This place is in the BIG REFACTOR zone 🤮
 
 export type UserType = string;
+
+export type UserAndRoomFormType = {
+    username: string;
+    room: string;
+};
 
 export type FormattedMessageType = {
     messageBody: string;

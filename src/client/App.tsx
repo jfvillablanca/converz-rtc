@@ -1,25 +1,27 @@
 import { Outlet, useOutletContext } from "react-router-dom";
 import "./App.css";
 import { Dispatch, SetStateAction, useState } from "react";
-
-type User = string;
+import { UserAndRoomFormType } from "../utils/types";
 
 function App() {
-    const [currentUser, setCurrentUser] = useState<User>("");
+    const [userAndRoom, setUserAndRoom] = useState<UserAndRoomFormType>({
+        username: "",
+        room: "",
+    });
 
     return (
         <div className='App'>
-            <Outlet context={[currentUser, setCurrentUser]} />
+            <Outlet context={[userAndRoom, setUserAndRoom]} />
         </div>
     );
 }
 
 type ContextType = [
-    currentUser: User,
-    setCurrentUser: Dispatch<SetStateAction<User>>
+    userAndRoom: UserAndRoomFormType,
+    setUserAndRoom: Dispatch<SetStateAction<UserAndRoomFormType>>
 ];
 
-export function useCurrentUser() {
+export function useUserAndRoom() {
     return useOutletContext<ContextType>();
 }
 

@@ -5,7 +5,7 @@ import ViteExpress from "vite-express";
 import { ENVIRONMENT, PORT, URL } from "./utils/env";
 import { Server, Socket } from "socket.io";
 import { formatMessage } from "./utils/messages";
-import { ChatMessageType, UserType } from "../utils/types";
+import { ChatMessageType, UserAndRoomFormType, UserType } from "../utils/types";
 import {
     EVENT_CHAT,
     EVENT_CHAT_FROM_SERVER,
@@ -32,16 +32,17 @@ io.on("connection", (socket: Socket) => {
     // HACK: Must use actual session IDs from a db.
     const { id } = socket;
 
-    socket.on(EVENT_UPDATE_USER_LIST, (newUser: UserType) => {
+    socket.on(EVENT_UPDATE_USER_LIST, (userAndRoom: UserAndRoomFormType) => {
         // NOTE: NOT SURE IF THIS `IF` WILL STILL BE NECESSARY WITH SESSION IDs
         // React re-renders the DOM twice during development mode
         // causing two emits (from the same socket.id)
+        const { username } = userAndRoom;
         if (isIdAUniqueConnection(id)) {
-            logTheUserIn(id, newUser, "default-room");
+            logTheUserIn(id, username, "default-room");
             io.emit(EVENT_UPDATE_USER_LIST_FROM_SERVER, getAllConnectedUsers());
             io.emit(
                 EVENT_CHAT_FROM_SERVER,
-                formatMessage(botName, `${newUser} joins the chat`)
+                formatMessage(botName, `${username} joins the chat`)
             );
         }
     });
