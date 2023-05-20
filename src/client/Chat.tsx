@@ -21,7 +21,7 @@ function Chat() {
     const [userList, setUserList] = useState<UserAndRoomFormType["username"][]>(
         []
     );
-    const [userAndRoom, _] = useAppContext();
+    const [userAndRoom, _, roomNames] = useAppContext();
 
     const [messageThread, setMessageThread] = useState<FormattedMessageType[]>(
         []
@@ -168,11 +168,25 @@ function Chat() {
                 <main className='chat-main h-full grid grid-cols-4 overflow-hidden'>
                     <div className='chat-sidebar pt-5 px-5 col-span-1 overflow-y-scroll'>
                         <h3 className='mb-4'>
-                            <i className='fas fa-comments mr-2'></i> Room Name
+                            <i className='fas fa-comments mr-2'></i> Rooms
                         </h3>
-                        <h2 id='room-name' className='p-2 mb-5 text-xl'>
-                            {userAndRoom.room}
-                        </h2>
+                        <ul className='mb-4 border-b-2'>
+                            {roomNames.map((room, index) => {
+                                const highlight =
+                                    userAndRoom.room === room
+                                        ? "current-room"
+                                        : "";
+                                return (
+                                    <li key={index}>
+                                        <h2
+                                            className={`rounded-lg p-3 mb-1 cursor-pointer ${highlight}`}
+                                        >
+                                            {room}
+                                        </h2>
+                                    </li>
+                                );
+                            })}
+                        </ul>
                         <h3 className='mb-4'>
                             <i className='fas fa-users mr-2'></i> Users
                         </h3>

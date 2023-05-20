@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Unica+One&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Unica+One&display=swap");
 
 :root {
   --dark-color-a: #272a35;
@@ -54,8 +54,8 @@ a {
   background: var(--dark-color-a);
 }
 
-.chat-sidebar h2 {
-  background: var(--dark-color-b);
+.chat-sidebar .current-room {
+  background: var(--dark-color-c);
 }
 
 .chat-messages {
