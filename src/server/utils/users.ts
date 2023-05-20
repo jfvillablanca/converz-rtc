@@ -1,8 +1,11 @@
-import { ConnectedUser, UserType } from "../../utils/types";
+import {
+    ConnectedUser,
+    UserAndRoomFormType,
+} from "../../utils/types";
 
 const users: ConnectedUser[] = [];
 
-export function logTheUserIn(sessionid: string, user: UserType, room: string) {
+export function logTheUserIn(sessionid: string, user: UserAndRoomFormType['username'], room: UserAndRoomFormType['room']) {
     users.push({
         user,
         sessionid,
@@ -22,6 +25,8 @@ export function isIdAUniqueConnection(sessionid: string): boolean {
     return !users.some((user) => user.sessionid === sessionid);
 }
 
-export function getAllConnectedUsers(): UserType[] {
-    return users.map((connectedUser) => connectedUser.user);
+export function getAllConnectedUsers(
+): UserAndRoomFormType['username'][] {
+    return users
+        .map((connectedUser) => connectedUser.user);
 }

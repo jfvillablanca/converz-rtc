@@ -5,7 +5,7 @@ import ViteExpress from "vite-express";
 import { ENVIRONMENT, PORT, URL } from "./utils/env";
 import { Server, Socket } from "socket.io";
 import { formatMessage } from "./utils/messages";
-import { ChatMessageType, UserAndRoomFormType, UserType } from "../utils/types";
+import { ChatMessageType, UserAndRoomFormType } from "../utils/types";
 import {
     EVENT_CHAT,
     EVENT_CHAT_FROM_SERVER,

@@ -3,7 +3,7 @@ import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import {
     ChatMessageType,
     FormattedMessageType,
-    UserType,
+    UserAndRoomFormType,
 } from "../utils/types";
 import { useAppContext } from "./App";
 import { socket } from "./socket";
@@ -15,7 +15,7 @@ import {
 } from "../utils/event-namespace";
 
 function Chat() {
-    const [userList, setUserList] = useState<UserType[]>([]);
+    const [userList, setUserList] = useState<UserAndRoomFormType['username'][]>([]);
     const [userAndRoom, _] = useAppContext();
 
     const [messageThread, setMessageThread] = useState<FormattedMessageType[]>(
@@ -124,7 +124,7 @@ function Chat() {
             ]);
         };
 
-        const handleUserListUpdate = (updatedUserList: UserType[]) => {
+        const handleUserListUpdate = (updatedUserList: UserAndRoomFormType['username'][]) => {
             setUserList(updatedUserList);
         };
 
