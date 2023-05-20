@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 // FIXME: This place is in the BIG REFACTOR zone 🤮
 
 export type UserType = string;
@@ -14,8 +16,9 @@ export type FormattedMessageType = {
 }
 
 export type ChatMessageType = {
+    user: UserAndRoomFormType['username'];
+    room: UserAndRoomFormType['room'];
     messageBody: string;
-    user: UserType;
 };
 
 export type ConnectedUser = {
@@ -24,5 +27,8 @@ export type ConnectedUser = {
     room: string;
 };
 
-
-
+export type ContextType = [
+    userAndRoom: UserAndRoomFormType,
+    setUserAndRoom: Dispatch<SetStateAction<UserAndRoomFormType>>,
+    roomNames: string[]
+];
