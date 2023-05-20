@@ -4,24 +4,26 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { UserAndRoomFormType } from "../utils/types";
 
 function App() {
+    const roomNames = ["JavaScript", "Python", "PHP", "C#", "Ruby", "Java"];
     const [userAndRoom, setUserAndRoom] = useState<UserAndRoomFormType>({
         username: "",
-        room: "",
+        room: roomNames[0],
     });
 
     return (
         <div className='App'>
-            <Outlet context={[userAndRoom, setUserAndRoom]} />
+            <Outlet context={[userAndRoom, setUserAndRoom, roomNames]} />
         </div>
     );
 }
 
 type ContextType = [
     userAndRoom: UserAndRoomFormType,
-    setUserAndRoom: Dispatch<SetStateAction<UserAndRoomFormType>>
+    setUserAndRoom: Dispatch<SetStateAction<UserAndRoomFormType>>,
+    roomNames: string[]
 ];
 
-export function useUserAndRoom() {
+export function useAppContext() {
     return useOutletContext<ContextType>();
 }
 

@@ -5,7 +5,7 @@ import {
     FormattedMessageType,
     UserType,
 } from "../utils/types";
-import { useUserAndRoom } from "./App";
+import { useAppContext } from "./App";
 import { socket } from "./socket";
 import {
     EVENT_CHAT,
@@ -16,13 +16,14 @@ import {
 
 function Chat() {
     const [userList, setUserList] = useState<UserType[]>([]);
-    const [userAndRoom, _] = useUserAndRoom();
+    const [userAndRoom, _] = useAppContext();
 
     const [messageThread, setMessageThread] = useState<FormattedMessageType[]>(
         []
     );
     const [chatMessage, setChatMessage] = useState<ChatMessageType>({
         user: userAndRoom.username,
+        room: userAndRoom.room,
         messageBody: "",
     });
 
@@ -156,7 +157,9 @@ function Chat() {
                         <h3 className='mb-4'>
                             <i className='fas fa-comments mr-2'></i> Room Name
                         </h3>
-                        <h2 id='room-name' className='p-2 mb-5 text-xl'></h2>
+                        <h2 id='room-name' className='p-2 mb-5 text-xl'>
+                            {userAndRoom.room}
+                        </h2>
                         <h3 className='mb-4'>
                             <i className='fas fa-users mr-2'></i> Users
                         </h3>

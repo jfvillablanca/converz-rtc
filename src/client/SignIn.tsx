@@ -1,9 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import { useUserAndRoom } from "./App";
+import { useAppContext } from "./App";
 
 function SignIn() {
-    const roomNames = ["JavaScript", "Python", "PHP", "C#", "Ruby", "Java"];
-    const [userAndRoom, setUserAndRoom] = useUserAndRoom();
+    const [userAndRoom, setUserAndRoom, roomNames] = useAppContext();
     const navigate = useNavigate();
 
     const handleInput = (
@@ -43,7 +42,9 @@ function SignIn() {
                             />
                         </div>
                         <div className='form-control mb-5'>
-                            <label htmlFor='room' className='block mb-1'>Room</label>
+                            <label htmlFor='room' className='block mb-1'>
+                                Room
+                            </label>
                             <select
                                 name='room'
                                 id='room'
