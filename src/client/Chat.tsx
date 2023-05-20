@@ -134,7 +134,9 @@ function Chat() {
             ]);
         };
 
-        const handleUserListUpdate = (updatedUserList: UserAndRoomFormType['username'][]) => {
+        const handleUserListUpdate = (
+            updatedUserList: UserAndRoomFormType["username"][]
+        ) => {
             setUserList(updatedUserList);
         };
 
