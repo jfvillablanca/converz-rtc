@@ -13,9 +13,14 @@ import {
     EVENT_UPDATE_USER_LIST,
     EVENT_UPDATE_USER_LIST_FROM_SERVER,
 } from "../utils/event-namespace";
+import { useNavigate } from "react-router-dom";
 
 function Chat() {
-    const [userList, setUserList] = useState<UserAndRoomFormType['username'][]>([]);
+    const navigate = useNavigate();
+
+    const [userList, setUserList] = useState<UserAndRoomFormType["username"][]>(
+        []
+    );
     const [userAndRoom, _] = useAppContext();
 
     const [messageThread, setMessageThread] = useState<FormattedMessageType[]>(
@@ -69,6 +74,11 @@ function Chat() {
                 messageBody: `${prevChatMessage.messageBody}\n`,
             }));
         }
+    };
+
+    const handleLeaveRoom = () => {
+        socket.disconnect();
+        navigate("/");
     };
 
     useEffect(() => {
@@ -147,7 +157,8 @@ function Chat() {
                     <h1>Converz</h1>
                     <a
                         id='leave-btn'
-                        className='btn rounded-lg py-2 px-4 text-xl'
+                        className='btn rounded-lg py-2 px-4 text-xl cursor-pointer select-none'
+                        onClick={handleLeaveRoom}
                     >
                         Leave
                     </a>

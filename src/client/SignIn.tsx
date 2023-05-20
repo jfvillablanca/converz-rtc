@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "./App";
+import { socket } from "./socket";
 
 function SignIn() {
     const [userAndRoom, setUserAndRoom, roomNames] = useAppContext();
@@ -15,6 +16,7 @@ function SignIn() {
     };
 
     const handleSubmit = () => {
+        socket.connect();
         navigate("/chat");
     };
 
