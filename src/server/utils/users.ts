@@ -26,7 +26,9 @@ export function isIdAUniqueConnection(sessionid: string): boolean {
 }
 
 export function getAllConnectedUsers(
+    room: UserAndRoomFormType["room"]
 ): UserAndRoomFormType['username'][] {
     return users
+        .filter((connectedUser) => connectedUser.room === room)
         .map((connectedUser) => connectedUser.user);
 }

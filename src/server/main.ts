@@ -36,31 +36,44 @@ io.on("connection", (socket: Socket) => {
         // NOTE: NOT SURE IF THIS `IF` WILL STILL BE NECESSARY WITH SESSION IDs
         // React re-renders the DOM twice during development mode
         // causing two emits (from the same socket.id)
-        const { username } = userAndRoom;
+        const { username, room } = userAndRoom;
         if (isIdAUniqueConnection(id)) {
-            logTheUserIn(id, username, "default-room");
-            io.emit(EVENT_UPDATE_USER_LIST_FROM_SERVER, getAllConnectedUsers());
-            io.emit(
+            socket.join(room);
+
+            logTheUserIn(id, username, room);
+            io.to(room).emit(
+                EVENT_UPDATE_USER_LIST_FROM_SERVER,
+                getAllConnectedUsers(room)
+            );
+            io.to(room).emit(
                 EVENT_CHAT_FROM_SERVER,
-                formatMessage(botName, `${username} joins the chat`)
+                formatMessage(
+                    `${botName} | ${room}`,
+                    `${username} joins the room`
+                )
             );
         }
     });
 
     socket.on(EVENT_CHAT, (msg: ChatMessageType) => {
-        io.emit(
+        const { user, room, messageBody } = msg;
+        io.to(room).emit(
             EVENT_CHAT_FROM_SERVER,
-            formatMessage(msg.user, msg.messageBody)
+            formatMessage(user, messageBody)
         );
     });
 
     socket.on("disconnect", () => {
         const exitingUser = logTheUserOut(id);
         if (exitingUser) {
-            io.emit(EVENT_UPDATE_USER_LIST_FROM_SERVER, getAllConnectedUsers());
-            io.emit(
+            const { user, room } = exitingUser;
+            io.to(room).emit(
+                EVENT_UPDATE_USER_LIST_FROM_SERVER,
+                getAllConnectedUsers(room)
+            );
+            io.to(room).emit(
                 EVENT_CHAT_FROM_SERVER,
-                formatMessage(botName, `${exitingUser.user} left the chat`)
+                formatMessage(`${botName} | ${room}`, `${user} left the room`)
             );
         }
     });
