@@ -21,7 +21,7 @@ function Chat() {
     const [userList, setUserList] = useState<UserAndRoomFormType["username"][]>(
         []
     );
-    const [userAndRoom, _, roomNames] = useAppContext();
+    const [userAndRoom, setUserAndRoom, roomNames] = useAppContext();
 
     const [messageThread, setMessageThread] = useState<FormattedMessageType[]>(
         []
@@ -81,6 +81,13 @@ function Chat() {
         navigate("/");
     };
 
+    const handleConnectToRoom = (room: UserAndRoomFormType["room"]) => {
+        setUserAndRoom((prevUserAndRoom) => ({
+            ...prevUserAndRoom,
+            room: room,
+        }));
+    };
+
     useEffect(() => {
         if (chatInputRef.current) {
             // HACK:
@@ -125,6 +132,10 @@ function Chat() {
     }, [messageThread]);
 
     useEffect(() => {
+        socket.emit(EVENT_UPDATE_USER_LIST, userAndRoom);
+    }, [userAndRoom]);
+
+    useEffect(() => {
         const handleIncomingMessage = (
             incomingMessage: FormattedMessageType
         ) => {
@@ -140,7 +151,6 @@ function Chat() {
             setUserList(updatedUserList);
         };
 
-        socket.emit(EVENT_UPDATE_USER_LIST, userAndRoom);
         socket.on(EVENT_CHAT_FROM_SERVER, handleIncomingMessage);
         socket.on(EVENT_UPDATE_USER_LIST_FROM_SERVER, handleUserListUpdate);
         return () => {
@@ -180,6 +190,9 @@ function Chat() {
                                     <li key={index}>
                                         <h2
                                             className={`rounded-lg p-3 mb-1 cursor-pointer ${highlight}`}
+                                            onClick={() =>
+                                                handleConnectToRoom(room)
+                                            }
                                         >
                                             {room}
                                         </h2>
