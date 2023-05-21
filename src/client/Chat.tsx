@@ -12,7 +12,7 @@ import {
     EVENT_CHAT_FROM_SERVER,
     EVENT_UPDATE_USER_LIST,
     EVENT_UPDATE_USER_LIST_FROM_SERVER,
-} from "../utils/event-namespace";
+} from "../utils/namespace";
 import { useNavigate } from "react-router-dom";
 
 function Chat() {
