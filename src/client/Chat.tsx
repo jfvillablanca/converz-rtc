@@ -165,11 +165,10 @@ function Chat() {
                 <header className='bg-base-200 px-4 py-2 flex items-center justify-between text-5xl font-["Unica_One"]'>
                     <h1>Converz</h1>
                     <a
-                        id='leave-btn'
-                        className='btn rounded-lg py-2 px-4 text-xl cursor-pointer select-none'
+                        className='btn btn-ghost rounded-lg'
                         onClick={handleLeaveRoom}
                     >
-                        Leave
+                        <i className='fas fa-sign-out-alt -rotate-180 text-xl'></i>
                     </a>
                 </header>
                 <main className='chat-main h-full grid grid-cols-4 overflow-hidden'>
