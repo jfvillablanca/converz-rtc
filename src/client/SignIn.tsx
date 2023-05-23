@@ -22,14 +22,14 @@ function SignIn() {
 
     return (
         <>
-            <div className='join-container my-20 mx-auto max-w-lg'>
-                <header className='join-header rounded-t-lg p-2 text-center'>
+            <div className='text-base-content my-20 mx-auto max-w-lg'>
+                <header className='font-["Unica_One"] bg-neutral-focus text-neutral-content rounded-t-lg p-2 text-center text-4xl'>
                     <h1>Converz</h1>
                 </header>
-                <main className='join-main rounded-b-lg py-7 px-10'>
+                <main className='bg-neutral rounded-b-lg py-7 px-10'>
                     <form onSubmit={handleSubmit}>
                         <div className='mb-5'>
-                            <label htmlFor='username' className='block mb-1'>
+                            <label htmlFor='username' className='text-neutral-content block mb-1'>
                                 Username
                             </label>
                             <input
@@ -39,18 +39,18 @@ function SignIn() {
                                 value={userAndRoom.username}
                                 onChange={handleInput}
                                 placeholder='Enter username...'
-                                className='p-3 rounded-lg w-full'
+                                className='input input-bordered focus:outline-none focus:shadow-[inset_0_0_0_3px_hsl(var(--pf))] p-3 rounded-lg w-full'
                                 required
                             />
                         </div>
-                        <div className='form-control mb-5'>
-                            <label htmlFor='room' className='block mb-1'>
+                        <div className='mb-5'>
+                            <label htmlFor='room' className='text-neutral-content block mb-1'>
                                 Room
                             </label>
                             <select
                                 name='room'
                                 id='room'
-                                className='p-3 rounded-lg w-full'
+                                className='select select-bordered focus:outline-none focus:shadow-[inset_0_0_0_3px_hsl(var(--pf))] p-3 rounded-lg w-full'
                                 value={userAndRoom.room}
                                 onChange={handleInput}
                             >
@@ -63,7 +63,7 @@ function SignIn() {
                         </div>
                         <button
                             type='submit'
-                            className='btn rounded-lg p-2 text-2xl mt-5 w-full'
+                            className='btn btn-info rounded-full p-2 text-2xl mt-5 w-full'
                         >
                             Join
                         </button>

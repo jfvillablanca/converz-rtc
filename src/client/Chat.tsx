@@ -164,8 +164,8 @@ function Chat() {
 
     return (
         <>
-            <div className='chat-container flex flex-col h-screen mx-auto max-w-6xl overflow-hidden'>
-                <header className='chat-header px-4 py-2 flex items-center justify-between'>
+            <div className='text-base-content flex flex-col h-screen mx-auto max-w-6xl overflow-hidden'>
+                <header className='bg-base-200 px-4 py-2 flex items-center justify-between text-5xl font-["Unica_One"]'>
                     <h1>Converz</h1>
                     <a
                         id='leave-btn'
@@ -176,7 +176,7 @@ function Chat() {
                     </a>
                 </header>
                 <main className='chat-main h-full grid grid-cols-4 overflow-hidden'>
-                    <div className='chat-sidebar pt-5 px-5 col-span-1 overflow-y-scroll'>
+                    <div className='bg-base-200 pt-5 px-5 col-span-1 overflow-y-scroll'>
                         <h3 className='mb-4'>
                             <i className='fas fa-comments mr-2'></i> Rooms
                         </h3>
@@ -184,7 +184,7 @@ function Chat() {
                             {roomNames.map((room, index) => {
                                 const highlight =
                                     userAndRoom.room === room
-                                        ? "current-room"
+                                        ? "bg-neutral-focus text-neutral-content"
                                         : "";
                                 return (
                                     <li key={index}>
@@ -218,7 +218,7 @@ function Chat() {
                         </ul>
                     </div>
                     <div
-                        className='chat-messages h-full p-7 pb-0 col-span-3 overflow-y-scroll'
+                        className='bg-base-100 h-full p-7 pb-0 col-span-3 overflow-y-scroll'
                         ref={chatThreadDivRef}
                     >
                         {messageThread.map((msg, index) => {
@@ -227,17 +227,18 @@ function Chat() {
                                     {shouldRenderUsername(index) && (
                                         <div className='grid grid-cols-8 mb-2 h-10'>
                                             {/* user avatar placeholder */}
-                                            <img
-                                                className='col-span-1 rounded-full flex self-center justify-self-center w-8 h-8 object-cover'
-                                                src='https://api.dicebear.com/6.x/identicon/svg'
-                                            />
+                                            <div className='avatar col-span-1 flex self-center justify-self-center w-8 h-8 object-cover'>
+                                                <div className='mask mask-hexagon'>
+                                                    <img src='https://api.dicebear.com/6.x/identicon/svg' />
+                                                </div>
+                                            </div>
                                             <p className='col-span-7 text-xl self-center font-bold'>
                                                 {msg.user}
                                             </p>
                                         </div>
                                     )}
-                                    <div className='message rounded-2xl grid grid-cols-8 py-3 pr-3'>
-                                        <p className='timestamp col-span-1 flex self-center justify-self-center opacity-70 text-xs'>
+                                    <div className='rounded-2xl grid grid-cols-8 py-3 pr-3 break-words group hover:bg-base-300 text-base-content'>
+                                        <p className='col-span-1 flex self-center justify-self-center opacity-70 text-xs invisible group-hover:visible'>
                                             {msg.time}
                                         </p>
                                         <p className='col-span-7 whitespace-pre-wrap'>
@@ -249,7 +250,7 @@ function Chat() {
                         })}
                     </div>
                 </main>
-                <div className='chat-form-container py-5 px-8'>
+                <div className='bg-base-200 py-5 px-8'>
                     <form
                         id='chat-form'
                         className='flex'
@@ -259,7 +260,7 @@ function Chat() {
                         }}
                     >
                         <textarea
-                            className='rounded-l-lg py-2 px-4 flex-1'
+                            className='textarea rounded-r-none rounded-l-lg py-2 px-4 flex-1 resize-none focus:outline-none focus:shadow-[inset_0_0_0_3px_hsl(var(--pf))]'
                             placeholder='Enter Message'
                             value={chatMessage.messageBody}
                             onChange={handleChatInput}
@@ -268,7 +269,7 @@ function Chat() {
                             rows={1}
                             required
                         ></textarea>
-                        <button className='btn rounded-r-lg py-2 px-4 text-xl'>
+                        <button className='btn h-auto pointer-events-auto rounded-l-none rounded-r-lg py-2 px-4 text-xl font-["Unica_One"]'>
                             <i className='fas fa-paper-plane'></i> Send
                         </button>
                     </form>
