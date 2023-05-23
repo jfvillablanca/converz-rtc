@@ -17,6 +17,7 @@
     "react-router-dom": "^6.11.1",
     "socket.io": "^4.6.1",
     "socket.io-client": "^4.6.1",
+    "theme-change": "^2.5.0",
     "ts-node": "^10.9.1",
     "vite-express": "*"
   },
