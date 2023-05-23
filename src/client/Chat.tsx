@@ -21,7 +21,13 @@ function Chat() {
     const [userList, setUserList] = useState<UserAndRoomFormType["username"][]>(
         []
     );
-    const [userAndRoom, setUserAndRoom, roomNames] = useAppContext();
+    const [
+        userAndRoom,
+        setUserAndRoom,
+        roomNames,
+        isThemeToggleChecked,
+        handleThemeToggle,
+    ] = useAppContext();
 
     const [messageThread, setMessageThread] = useState<FormattedMessageType[]>(
         []
@@ -162,14 +168,22 @@ function Chat() {
     return (
         <>
             <div className='text-base-content flex flex-col h-screen mx-auto max-w-6xl overflow-hidden'>
-                <header className='bg-base-200 px-4 py-2 flex items-center justify-between text-5xl font-["Unica_One"]'>
-                    <h1>Converz</h1>
+                <header className='bg-base-200 px-4 py-2 flex items-center justify-between'>
                     <a
                         className='btn btn-ghost rounded-lg'
                         onClick={handleLeaveRoom}
                     >
                         <i className='fas fa-sign-out-alt -rotate-180 text-xl'></i>
                     </a>
+                    <h1 className='flex items-center justify-between text-5xl font-["Unica_One"]'>
+                        Converz
+                    </h1>
+                    <input
+                        type='checkbox'
+                        className='toggle'
+                        checked={isThemeToggleChecked}
+                        onChange={handleThemeToggle}
+                    />
                 </header>
                 <main className='chat-main h-full grid grid-cols-4 overflow-hidden'>
                     <div className='bg-base-200 pt-5 px-5 col-span-1 overflow-y-scroll'>

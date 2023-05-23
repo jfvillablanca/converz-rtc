@@ -3,7 +3,13 @@ import { useAppContext } from "./App";
 import { socket } from "./socket";
 
 function SignIn() {
-    const [userAndRoom, setUserAndRoom, roomNames] = useAppContext();
+    const [
+        userAndRoom,
+        setUserAndRoom,
+        roomNames,
+        isThemeToggleChecked,
+        handleThemeToggle,
+    ] = useAppContext();
     const navigate = useNavigate();
 
     const handleInput = (
@@ -22,14 +28,23 @@ function SignIn() {
 
     return (
         <>
-            <div className='text-base-content my-20 mx-auto max-w-lg'>
-                <header className='font-["Unica_One"] bg-neutral-focus text-neutral-content rounded-t-lg p-2 text-center text-4xl'>
-                    <h1>Converz</h1>
+            <div className='text-base-content py-20 mx-auto max-w-lg'>
+                <header className='font-["Unica_One"] bg-neutral-focus text-neutral-content rounded-t-lg p-2 text-center text-4xl grid grid-cols-3'>
+                    <h1 className='col-start-2'>Converz</h1>
+                    <input
+                        type='checkbox'
+                        className='toggle place-self-end self-center'
+                        checked={isThemeToggleChecked}
+                        onChange={handleThemeToggle}
+                    />
                 </header>
                 <main className='bg-neutral rounded-b-lg py-7 px-10'>
                     <form onSubmit={handleSubmit}>
                         <div className='mb-5'>
-                            <label htmlFor='username' className='text-neutral-content block mb-1'>
+                            <label
+                                htmlFor='username'
+                                className='text-neutral-content block mb-1'
+                            >
                                 Username
                             </label>
                             <input
@@ -44,7 +59,10 @@ function SignIn() {
                             />
                         </div>
                         <div className='mb-5'>
-                            <label htmlFor='room' className='text-neutral-content block mb-1'>
+                            <label
+                                htmlFor='room'
+                                className='text-neutral-content block mb-1'
+                            >
                                 Room
                             </label>
                             <select

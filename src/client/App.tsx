@@ -14,10 +14,10 @@ function App() {
     const lightTheme = "acid";
     const darkTheme = "coffee";
     const [theme, setTheme] = useState(darkTheme);
-    const [isChecked, setIsChecked] = useState(true);
+    const [isThemeToggleChecked, setIsThemeToggleChecked] = useState(true);
 
     const handleThemeToggle = () => {
-        setIsChecked((prevState) => !prevState);
+        setIsThemeToggleChecked((prevState) => !prevState);
         setTheme((prevState) =>
             prevState === lightTheme ? darkTheme : lightTheme
         );
@@ -29,13 +29,15 @@ function App() {
 
     return (
         <div className='h-screen font-["JetBrains_Mono"]' data-theme={theme}>
-            <input
-                type='checkbox'
-                className='toggle'
-                checked={isChecked}
-                onChange={handleThemeToggle}
+            <Outlet
+                context={[
+                    userAndRoom,
+                    setUserAndRoom,
+                    roomNames,
+                    isThemeToggleChecked,
+                    handleThemeToggle,
+                ]}
             />
-            <Outlet context={[userAndRoom, setUserAndRoom, roomNames]} />
         </div>
     );
 }

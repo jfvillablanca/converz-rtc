@@ -33,5 +33,7 @@ export type ConnectedUser = {
 export type ContextType = [
     userAndRoom: UserAndRoomFormType,
     setUserAndRoom: Dispatch<SetStateAction<UserAndRoomFormType>>,
-    roomNames: UserAndRoomFormType['room'][]
+    roomNames: UserAndRoomFormType['room'][],
+    isThemeToggleChecked: boolean,
+    handleThemeToggle: () => void,
 ];
