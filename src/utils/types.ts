@@ -13,6 +13,11 @@ export type FormattedMessageType = {
     time: string;
 }
 
+export type MessageThread = {
+    room: UserAndRoomFormType['room'];
+    thread: Array<FormattedMessageType>;
+};
+
 export type ChatMessageType = {
     user: UserAndRoomFormType['username'];
     room: UserAndRoomFormType['room'];

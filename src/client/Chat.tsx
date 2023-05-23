@@ -1,5 +1,11 @@
 import { KeyboardEvent, useEffect, useRef, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
+import {
+    EVENT_CHAT,
+    EVENT_CHAT_FROM_SERVER,
+    EVENT_UPDATE_USER_LIST,
+    EVENT_UPDATE_USER_LIST_FROM_SERVER,
+} from "../utils/namespace";
 import {
     ChatMessageType,
     FormattedMessageType,
@@ -7,13 +13,6 @@ import {
 } from "../utils/types";
 import { useAppContext } from "./App";
 import { socket } from "./socket";
-import {
-    EVENT_CHAT,
-    EVENT_CHAT_FROM_SERVER,
-    EVENT_UPDATE_USER_LIST,
-    EVENT_UPDATE_USER_LIST_FROM_SERVER,
-} from "../utils/namespace";
-import { useNavigate } from "react-router-dom";
 
 function Chat() {
     const navigate = useNavigate();
@@ -137,18 +136,15 @@ function Chat() {
 
     useEffect(() => {
         const handleIncomingMessage = (
-            incomingMessage: FormattedMessageType
+            updatedMessageThread: FormattedMessageType[]
         ) => {
-            setMessageThread((prevMessageThread) => [
-                ...prevMessageThread,
-                incomingMessage,
-            ]);
+            setMessageThread(() => updatedMessageThread);
         };
 
         const handleUserListUpdate = (
             updatedUserList: UserAndRoomFormType["username"][]
         ) => {
-            setUserList(updatedUserList);
+            setUserList(() => updatedUserList);
         };
 
         socket.on(EVENT_CHAT_FROM_SERVER, handleIncomingMessage);

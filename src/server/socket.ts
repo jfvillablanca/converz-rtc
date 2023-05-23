@@ -7,7 +7,7 @@ import {
     EVENT_UPDATE_USER_LIST_FROM_SERVER,
 } from "../utils/namespace";
 import { ChatMessageType, UserAndRoomFormType } from "../utils/types";
-import { formatMessage } from "./utils/messages";
+import { addMessageToThread, getAllMessagesFromRoom } from "./utils/messages";
 import {
     getAllConnectedUsers,
     isIdAUniqueConnection,
@@ -15,22 +15,29 @@ import {
     logTheUserOut,
 } from "./utils/users";
 
-export default function serverSocket(io: Server) {
-    const logoutWrapper = (io: Server, id: string) => {
-        const exitingUser = logTheUserOut(id);
-        if (exitingUser) {
-            const { user, room } = exitingUser;
-            io.to(room).emit(
-                EVENT_UPDATE_USER_LIST_FROM_SERVER,
-                getAllConnectedUsers(room)
-            );
-            io.to(room).emit(
-                EVENT_CHAT_FROM_SERVER,
-                formatMessage(`${BOT_NAME} | ${room}`, `${user} left the room`)
-            );
-        }
-    };
+const sendChatEventToClient = (io: Server, message: ChatMessageType) => {
+    const { room } = message;
+    addMessageToThread(message);
+    io.to(room).emit(EVENT_CHAT_FROM_SERVER, getAllMessagesFromRoom(room));
+};
 
+const logoutWrapper = (io: Server, id: string) => {
+    const exitingUser = logTheUserOut(id);
+    if (exitingUser) {
+        const { user, room } = exitingUser;
+        io.to(room).emit(
+            EVENT_UPDATE_USER_LIST_FROM_SERVER,
+            getAllConnectedUsers(room)
+        );
+        sendChatEventToClient(io, {
+            user: `${BOT_NAME} | ${room}`,
+            room,
+            messageBody: `${user} left the room`,
+        });
+    }
+};
+
+export default function serverSocket(io: Server) {
     io.on("connection", (socket: Socket) => {
         // HACK: Must use actual session IDs from a db.
         const { id } = socket;
@@ -56,23 +63,17 @@ export default function serverSocket(io: Server) {
                         EVENT_UPDATE_USER_LIST_FROM_SERVER,
                         getAllConnectedUsers(currentRoom)
                     );
-                    io.to(currentRoom).emit(
-                        EVENT_CHAT_FROM_SERVER,
-                        formatMessage(
-                            `${BOT_NAME} | ${currentRoom}`,
-                            `${username} joins the room`
-                        )
-                    );
+                    sendChatEventToClient(io, {
+                        user: `${BOT_NAME} | ${currentRoom}`,
+                        room: currentRoom,
+                        messageBody: `${username} joins the room`,
+                    });
                 }
             }
         );
 
         socket.on(EVENT_CHAT, (msg: ChatMessageType) => {
-            const { user, messageBody } = msg;
-            io.to(currentRoom).emit(
-                EVENT_CHAT_FROM_SERVER,
-                formatMessage(user, messageBody)
-            );
+            sendChatEventToClient(io, {...msg, room: currentRoom});
         });
 
         socket.on("disconnect", () => {
