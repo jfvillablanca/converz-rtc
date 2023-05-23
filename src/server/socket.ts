@@ -30,7 +30,7 @@ const logoutWrapper = (io: Server, id: string) => {
             getAllConnectedUsers(room)
         );
         sendChatEventToClient(io, {
-            user: `${BOT_NAME} | ${room}`,
+            user: BOT_NAME,
             room,
             messageBody: `${user} left the room`,
         });
@@ -64,7 +64,7 @@ export default function serverSocket(io: Server) {
                         getAllConnectedUsers(currentRoom)
                     );
                     sendChatEventToClient(io, {
-                        user: `${BOT_NAME} | ${currentRoom}`,
+                        user: BOT_NAME,
                         room: currentRoom,
                         messageBody: `${username} joins the room`,
                     });
@@ -73,7 +73,7 @@ export default function serverSocket(io: Server) {
         );
 
         socket.on(EVENT_CHAT, (msg: ChatMessageType) => {
-            sendChatEventToClient(io, {...msg, room: currentRoom});
+            sendChatEventToClient(io, { ...msg, room: currentRoom });
         });
 
         socket.on("disconnect", () => {

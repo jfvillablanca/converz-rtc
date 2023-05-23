@@ -1,6 +1,7 @@
 import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+    BOT_NAME,
     EVENT_CHAT,
     EVENT_CHAT_FROM_SERVER,
     EVENT_UPDATE_USER_LIST,
@@ -220,27 +221,35 @@ function Chat() {
                         {messageThread.map((msg, index) => {
                             return (
                                 <div key={index} className='mt-2'>
-                                    {shouldRenderUsername(index) && (
-                                        <div className='grid grid-cols-8 mb-2 h-10'>
-                                            {/* user avatar placeholder */}
-                                            <div className='avatar col-span-1 flex self-center justify-self-center w-8 h-8 object-cover'>
-                                                <div className='mask mask-hexagon'>
-                                                    <img src='https://api.dicebear.com/6.x/identicon/svg' />
+                                    {msg.user !== BOT_NAME &&
+                                        shouldRenderUsername(index) && (
+                                            <div className='grid grid-cols-8 mb-2 h-10'>
+                                                {/* user avatar placeholder */}
+                                                <div className='avatar col-span-1 flex self-center justify-self-center w-8 h-8 object-cover'>
+                                                    <div className='mask mask-hexagon'>
+                                                        <img src='https://api.dicebear.com/6.x/identicon/svg' />
+                                                    </div>
                                                 </div>
+                                                <p className='col-span-7 text-xl self-center font-bold'>
+                                                    {msg.user}
+                                                </p>
                                             </div>
-                                            <p className='col-span-7 text-xl self-center font-bold'>
-                                                {msg.user}
+                                        )}
+                                    {msg.user === BOT_NAME && (
+                                        <p className='divider'>
+                                            {msg.messageBody}
+                                        </p>
+                                    )}
+                                    {msg.user !== BOT_NAME && (
+                                        <div className='rounded-2xl grid grid-cols-8 py-3 pr-3 break-words group hover:bg-base-300 text-base-content'>
+                                            <p className='col-span-1 flex self-center justify-self-center opacity-70 text-xs invisible group-hover:visible'>
+                                                {msg.time}
+                                            </p>
+                                            <p className='col-span-7 whitespace-pre-wrap'>
+                                                {msg.messageBody}
                                             </p>
                                         </div>
                                     )}
-                                    <div className='rounded-2xl grid grid-cols-8 py-3 pr-3 break-words group hover:bg-base-300 text-base-content'>
-                                        <p className='col-span-1 flex self-center justify-self-center opacity-70 text-xs invisible group-hover:visible'>
-                                            {msg.time}
-                                        </p>
-                                        <p className='col-span-7 whitespace-pre-wrap'>
-                                            {msg.messageBody}
-                                        </p>
-                                    </div>
                                 </div>
                             );
                         })}
