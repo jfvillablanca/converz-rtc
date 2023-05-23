@@ -275,7 +275,7 @@ function Chat() {
                             required
                         ></textarea>
                         <button className='btn h-auto pointer-events-auto rounded-l-none rounded-r-lg py-2 px-4 text-xl font-["Unica_One"]'>
-                            <i className='fas fa-paper-plane'></i> Send
+                            <i className='fas fa-paper-plane mr-3'></i> Send
                         </button>
                     </form>
                 </div>
