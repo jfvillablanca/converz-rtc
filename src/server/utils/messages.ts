@@ -2,11 +2,11 @@ import moment from "moment";
 import {
     ChatMessageType,
     FormattedMessageType,
-    MessageThread,
+    MessageThreadType,
     UserAndRoomFormType,
 } from "../../utils/types";
 
-const messages: MessageThread[] = [];
+const messages: MessageThreadType[] = [];
 
 function formatMessage(
     user: string,

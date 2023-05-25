@@ -13,7 +13,7 @@ export type FormattedMessageType = {
     time: string;
 }
 
-export type MessageThread = {
+export type MessageThreadType = {
     room: UserAndRoomFormType['room'];
     thread: Array<FormattedMessageType>;
 };
@@ -24,7 +24,7 @@ export type ChatMessageType = {
     messageBody: string;
 };
 
-export type ConnectedUser = {
+export type ConnectedUserType = {
     user: UserAndRoomFormType['username'];
     room: UserAndRoomFormType['room'];
     sessionid: string;

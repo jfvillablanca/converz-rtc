@@ -1,9 +1,9 @@
 import {
-    ConnectedUser,
+    ConnectedUserType,
     UserAndRoomFormType,
 } from "../../utils/types";
 
-const users: ConnectedUser[] = [];
+const users: ConnectedUserType[] = [];
 
 export function logTheUserIn(sessionid: string, user: UserAndRoomFormType['username'], room: UserAndRoomFormType['room']) {
     users.push({
@@ -13,7 +13,7 @@ export function logTheUserIn(sessionid: string, user: UserAndRoomFormType['usern
     });
 }
 
-export function logTheUserOut(sessionid: string): ConnectedUser | undefined {
+export function logTheUserOut(sessionid: string): ConnectedUserType | undefined {
     const index = users.findIndex((user) => user.sessionid === sessionid);
 
     if (index !== -1) {
