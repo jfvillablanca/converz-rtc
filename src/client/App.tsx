@@ -5,7 +5,7 @@ import { ContextType, UserAndRoomFormType } from "../utils/types";
 import "./App.css";
 
 function App() {
-    const roomNames = ["JavaScript", "Python", "PHP", "C#", "Ruby", "Java"];
+    const roomNames = ["Balloon", "Pineapple", "Telescope", "Ball games", "Concept of Being", "Jazz"];
     const [userAndRoom, setUserAndRoom] = useState<UserAndRoomFormType>({
         username: "",
         room: roomNames[0],

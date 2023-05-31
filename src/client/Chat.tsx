@@ -181,8 +181,8 @@ function Chat() {
                 </header>
                 <main className='chat-main h-full grid grid-cols-4 overflow-hidden'>
                     <div className='bg-base-200 pt-5 px-5 col-span-1 overflow-y-scroll'>
-                        <h3 className='mb-4'>
-                            <i className='fas fa-comments mr-2'></i> Rooms
+                        <h3 className='text-secondary-content mb-4 font-extrabold underline underline-offset-4'>
+                            Rooms
                         </h3>
                         <ul className='mb-4 border-b-2'>
                             {roomNames.map((room, index) => {
@@ -204,8 +204,8 @@ function Chat() {
                                 );
                             })}
                         </ul>
-                        <h3 className='mb-4'>
-                            <i className='fas fa-users mr-2'></i> Users
+                        <h3 className='text-secondary-content mb-4 font-extrabold underline underline-offset-4'>
+                            Users
                         </h3>
                         <ul id='users'>
                             {userList.length === 0 ? (
@@ -213,7 +213,7 @@ function Chat() {
                             ) : (
                                 userList.map((connectedUser, index) => {
                                     return (
-                                        <li key={index} className='py-3 px-0'>
+                                        <li key={index} className='p-3'>
                                             {connectedUser}
                                         </li>
                                     );
