@@ -29,10 +29,10 @@ function ChatBubble({
                     <img src={generateAvatarURL} />
                 </div>
             </div>
-            <p className='chat-bubble chat-bubble-info whitespace-pre-wrap'>
+            <p className='chat-bubble chat-bubble-info whitespace-pre-wrap text-xl'>
                 {msg.messageBody}
             </p>
-            <div className='chat-footer row-start-2 mb-2 font-bold'>
+            <div className='chat-footer row-start-2 mb-2 font-bold text-md'>
                 {msg.user}
                 <time className='opacity-70 ml-3 text-xs'>{msg.time}</time>
             </div>

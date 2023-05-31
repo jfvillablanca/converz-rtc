@@ -94,7 +94,7 @@ function Chat() {
             // HACK:
             // Currently hardcoded min and max height values.
             // Min height could be inferred based on target style from first render
-            const minChatInputHeight = 45;
+            const minChatInputHeight = 55;
             const maxChatInputHeight = minChatInputHeight * 2;
 
             const target = chatInputRef.current;
@@ -245,7 +245,7 @@ function Chat() {
                         }}
                     >
                         <textarea
-                            className='textarea rounded-r-none rounded-l-lg py-2 px-4 flex-1 resize-none focus:outline-none focus:shadow-[inset_0_0_0_3px_hsl(var(--pf))]'
+                            className='textarea rounded-r-none rounded-l-lg py-2 px-4 flex-1 resize-none focus:outline-none focus:shadow-[inset_0_0_0_3px_hsl(var(--pf))] text-xl'
                             placeholder='Enter Message'
                             value={chatMessage.messageBody}
                             onChange={handleChatInput}
