@@ -56,12 +56,6 @@ function Chat() {
         }
     };
 
-    const shouldRenderUsername = (index: number) => {
-        const prevUserToChat = messageThread[index - 1]?.user;
-        const nextUserToChat = messageThread[index]?.user;
-        return prevUserToChat !== nextUserToChat;
-    };
-
     const handleChatInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setChatMessage((prevChatMessage) => ({
             ...prevChatMessage,
@@ -232,38 +226,10 @@ function Chat() {
                         ref={chatThreadDivRef}
                     >
                         {messageThread.map((msg, index) => {
-                            return (
-                                <div key={index} className='mt-2'>
-                                    {msg.user !== BOT_NAME &&
-                                        shouldRenderUsername(index) && (
-                                            <div className='grid grid-cols-8 mb-2 h-10'>
-                                                {/* user avatar placeholder */}
-                                                <div className='avatar col-span-1 flex self-center justify-self-center w-8 h-8 object-cover'>
-                                                    <div className='mask mask-hexagon'>
-                                                        <img src='https://api.dicebear.com/6.x/identicon/svg' />
-                                                    </div>
-                                                </div>
-                                                <p className='col-span-7 text-xl self-center font-bold'>
-                                                    {msg.user}
-                                                </p>
-                                            </div>
-                                        )}
-                                    {msg.user === BOT_NAME && (
-                                        <p className='divider'>
-                                            {msg.messageBody}
-                                        </p>
-                                    )}
-                                    {msg.user !== BOT_NAME && (
-                                        <div className='rounded-2xl grid grid-cols-8 py-3 pr-3 break-words group hover:bg-base-300 text-base-content'>
-                                            <p className='col-span-1 flex self-center justify-self-center opacity-70 text-xs invisible group-hover:visible'>
-                                                {msg.time}
-                                            </p>
-                                            <p className='col-span-7 whitespace-pre-wrap'>
-                                                {msg.messageBody}
-                                            </p>
-                                        </div>
-                                    )}
-                                </div>
+                            return msg.user !== BOT_NAME ? (
+                                <ChatBubble index={index} msg={msg} />
+                            ) : (
+                                <BotNotification msg={msg} />
                             );
                         })}
                     </div>
@@ -295,6 +261,36 @@ function Chat() {
             </div>
         </>
     );
+}
+
+function ChatBubble({
+    index,
+    msg,
+}: {
+    index: number;
+    msg: FormattedMessageType;
+}) {
+    return (
+        <div key={index} className='chat chat-start mb-2'>
+            {/* user avatar placeholder */}
+            <div className='chat-image avatar w-10 h-10 mr-2'>
+                <div className='mask mask-hexagon'>
+                    <img src='https://api.dicebear.com/6.x/identicon/svg' />
+                </div>
+            </div>
+            <div className='chat-header mb-2 font-bold'>
+                {msg.user}
+                <time className='opacity-70 ml-3 text-xs'>{msg.time}</time>
+            </div>
+            <p className='chat-bubble chat-bubble-info whitespace-pre-wrap'>
+                {msg.messageBody}
+            </p>
+        </div>
+    );
+}
+
+function BotNotification({ msg }: { msg: FormattedMessageType }) {
+    return <p className='divider'>{msg.messageBody}</p>;
 }
 
 export default Chat;
