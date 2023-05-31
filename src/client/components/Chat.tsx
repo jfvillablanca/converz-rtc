@@ -6,14 +6,14 @@ import {
     EVENT_CHAT_FROM_SERVER,
     EVENT_UPDATE_USER_LIST,
     EVENT_UPDATE_USER_LIST_FROM_SERVER,
-} from "../utils/namespace";
+} from "../../utils/namespace";
 import {
     ChatMessageType,
     FormattedMessageType,
     UserAndRoomFormType,
-} from "../utils/types";
-import { useAppContext } from "./App";
-import { socket } from "./socket";
+} from "../../utils/types";
+import { useAppContext } from "./../App";
+import { socket } from "./../socket";
 
 function Chat() {
     const navigate = useNavigate();

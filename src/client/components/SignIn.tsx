@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { useAppContext } from "./App";
-import { socket } from "./socket";
+import { useAppContext } from "./../App";
+import { socket } from "./../socket";
 
 function SignIn() {
     const [

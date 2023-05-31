@@ -5,8 +5,8 @@ import ReactDOM from "react-dom/client";
 
 import App from "./App";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import SignIn from "./SignIn";
-import Chat from "./Chat";
+import SignIn from "./components/SignIn";
+import Chat from "./components/Chat";
 
 const router = createBrowserRouter([
     {
