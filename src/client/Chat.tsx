@@ -270,8 +270,11 @@ function ChatBubble({
     index: number;
     msg: FormattedMessageType;
 }) {
+    const [userAndRoom] = useAppContext();
+    const { username } = userAndRoom;
+    const chatSide = msg.user === username ? "chat-end" : "chat-start";
     return (
-        <div key={index} className='chat chat-start mb-2'>
+        <div key={index} className={`chat ${chatSide} mb-2`}>
             {/* user avatar placeholder */}
             <div className='chat-image avatar w-10 h-10 mr-2'>
                 <div className='mask mask-hexagon'>
